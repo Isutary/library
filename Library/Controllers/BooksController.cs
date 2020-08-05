@@ -2,40 +2,56 @@
 using Library.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace Library.Controllers
 {
     [ApiController]
-    [Route("[controller]")]
+    [Route("api/[controller]")]
     public class BooksController : Controller
     {
-        private LibraryDbContext _context;
+        private readonly LibraryDbContext _context;
 
         public BooksController(LibraryDbContext context) => _context = context;
         
         [HttpGet]
-        public IActionResult GetBooks()
+        public async Task<IActionResult> GetBooks()
         {
-            var books = _context.Books.Where(x => true).Include(x => x.Author);
+            List<Book> books = await _context.Books.Where(x => true).Include(x => x.Author).ToListAsync();
             return Ok(books);
         }
 
         [HttpGet("{id}")]
-        public IActionResult GetBook(int id)
+        public async Task<IActionResult> GetBook(int id)
         {
-            Book book = _context.Books.Where(x => x.Id == id).Include(x => x.Author).FirstOrDefault();
+            Book book = await _context.Books.Where(x => x.Id == id).Include(x => x.Author).FirstOrDefaultAsync();
+            if (book == null) return NotFound(new Error { Message = $"Book with id: {id} does not exist." });
             return Ok(book);
         }
 
         [HttpPost]
-        public IActionResult AddBook([FromForm] Book book)
+        public async Task<IActionResult> AddBook([FromForm] Book book)
         {
-            book.Author = _context.Authors.Where(x => x.FirstName == book.Author.FirstName).FirstOrDefault();
-            book.AuthorId = _context.Authors.Where(x => x.FirstName == book.Author.FirstName).Select(x => x.Id).FirstOrDefault();
+            book.Author = await _context.Authors.Where(x => x.FirstName == book.Author.FirstName).FirstOrDefaultAsync();
+            book.AuthorId = await _context.Authors.Where(x => x.FirstName == book.Author.FirstName).Select(x => x.Id).FirstOrDefaultAsync();
             _context.Books.Add(book);
-            _context.SaveChangesAsync();
-            return Accepted(book);
+            await _context.SaveChangesAsync();
+            return Created("", book);
+        }
+
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> DeleteBook(int id)
+        {
+            Book book = await _context.Books.FindAsync(id);
+            if (book == null)
+            {
+                return NotFound(new Error { Message = $"Book with id: {id} does not exist." });
+            }
+            _context.Books.Remove(book);
+            await _context.SaveChangesAsync();
+            return Ok(book);
         }
     }
 }

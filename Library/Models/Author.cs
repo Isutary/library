@@ -7,7 +7,6 @@ namespace Library.Models
     public class Author
     {
         [Key]
-        [BindNever]
         public int Id { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }

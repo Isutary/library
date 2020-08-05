@@ -8,10 +8,10 @@ using System.Linq;
 namespace Library.Controllers
 {
     [ApiController]
-    [Route("[controller]")]
+    [Route("api/[controller]")]
     public class SeedController : Controller
     {
-        private LibraryDbContext _context;
+        private readonly LibraryDbContext _context;
 
         public SeedController(LibraryDbContext context) => _context = context;
 
