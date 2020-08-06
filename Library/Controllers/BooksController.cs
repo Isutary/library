@@ -19,7 +19,7 @@ namespace Library.Controllers
         [HttpGet]
         public async Task<IActionResult> GetBooks()
         {
-            List<Book> books = await _context.Books.Where(x => true).Include(x => x.Author).ToListAsync();
+            List<Book> books = await _context.Books.Include(x => x.Author).ToListAsync();
             return Ok(books);
         }
 
@@ -34,8 +34,10 @@ namespace Library.Controllers
         [HttpPost]
         public async Task<IActionResult> AddBook([FromForm] Book book)
         {
-            book.Author = await _context.Authors.Where(x => x.FirstName == book.Author.FirstName).FirstOrDefaultAsync();
-            book.AuthorId = await _context.Authors.Where(x => x.FirstName == book.Author.FirstName).Select(x => x.Id).FirstOrDefaultAsync();
+            Author author = await _context.Authors.FindAsync(book.Author.Id);
+            if (author == null) return NotFound(new Error { Message = $"Author with id: {book.Author.Id} does not exist" });
+            book.Author = author;
+            book.AuthorId = author.Id;
             _context.Books.Add(book);
             await _context.SaveChangesAsync();
             return Created("", book);
@@ -45,10 +47,7 @@ namespace Library.Controllers
         public async Task<IActionResult> DeleteBook(int id)
         {
             Book book = await _context.Books.FindAsync(id);
-            if (book == null)
-            {
-                return NotFound(new Error { Message = $"Book with id: {id} does not exist." });
-            }
+            if (book == null) return NotFound(new Error { Message = $"Book with id: {id} does not exist." });
             _context.Books.Remove(book);
             await _context.SaveChangesAsync();
             return Ok(book);

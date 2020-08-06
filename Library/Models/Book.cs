@@ -11,6 +11,7 @@ namespace Library.Models
         [Key]
         [BindNever]
         public int Id { get; set; }
+        [Required]
         public string Name { get; set; }
         [ForeignKey(nameof(Author))]
         [BindNever]

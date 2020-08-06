@@ -24,7 +24,10 @@ namespace Library
 
             services.AddDbContext<LibraryDbContext>(options => 
                 options.UseSqlServer(Configuration.GetConnectionString("LibraryDbContext")));
-
+            services.AddTransient<SeedData>();
+            services.AddControllers().AddNewtonsoftJson(options =>
+                options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore
+            );
             services.AddControllersWithViews();
 
             services.AddSpaStaticFiles(configuration =>

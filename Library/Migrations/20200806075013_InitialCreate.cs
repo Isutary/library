@@ -13,8 +13,8 @@ namespace Library.Migrations
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    FirstName = table.Column<string>(nullable: true),
-                    LastName = table.Column<string>(nullable: true),
+                    FirstName = table.Column<string>(nullable: false),
+                    LastName = table.Column<string>(nullable: false),
                     Born = table.Column<DateTime>(nullable: false),
                     Died = table.Column<DateTime>(nullable: false)
                 },
@@ -29,7 +29,7 @@ namespace Library.Migrations
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Name = table.Column<string>(nullable: true),
+                    Name = table.Column<string>(nullable: false),
                     AuthorId = table.Column<int>(nullable: false),
                     Published = table.Column<DateTime>(nullable: false)
                 },
