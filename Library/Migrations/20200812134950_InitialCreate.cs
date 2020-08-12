@@ -11,8 +11,7 @@ namespace Library.Migrations
                 name: "Authors",
                 columns: table => new
                 {
-                    Id = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Id = table.Column<Guid>(nullable: false),
                     FirstName = table.Column<string>(nullable: false),
                     LastName = table.Column<string>(nullable: false),
                     Born = table.Column<DateTime>(nullable: false),
@@ -27,10 +26,9 @@ namespace Library.Migrations
                 name: "Books",
                 columns: table => new
                 {
-                    Id = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Id = table.Column<Guid>(nullable: false),
                     Name = table.Column<string>(nullable: false),
-                    AuthorId = table.Column<int>(nullable: false),
+                    AuthorId = table.Column<Guid>(nullable: false),
                     Published = table.Column<DateTime>(nullable: false)
                 },
                 constraints: table =>

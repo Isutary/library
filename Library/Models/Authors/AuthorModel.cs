@@ -5,17 +5,17 @@ using System.ComponentModel.DataAnnotations;
 
 namespace Library.Models
 {
-    public class Author
+    public class AuthorModel
     {
         [Key]
-        public int Id { get; set; }
+        public Guid Id { get; set; }
         [Required]
         public string FirstName { get; set; }
         [Required]
         public string LastName { get; set; }
         public DateTime Born { get; set; }
         public DateTime Died { get; set; }
-        public List<Book> Books { get; set; }
-        public Author() { }
+        public List<BookModel> Books { get; set; }
+        public AuthorModel() { }
     }
 }

@@ -1,7 +1,10 @@
 using Library.Data;
+using Library.Infrastructure;
+using Library.Models.Identity;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.SpaServices.ReactDevelopmentServer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -21,14 +24,22 @@ namespace Library
 
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddDbContext<LibraryIdentityDbContext>(options =>
+                options.UseSqlServer(Configuration.GetConnectionString("LibraryIdentityDbContext")));
 
-            services.AddDbContext<LibraryDbContext>(options => 
+            services.AddIdentityWithSettings<UserModel, IdentityRole, LibraryIdentityDbContext>();
+
+            services.AddDbContext<LibraryDbContext>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString("LibraryDbContext")));
+
             services.AddTransient<SeedData>();
+
             services.AddControllers().AddNewtonsoftJson(options =>
                 options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore
             );
+
             services.AddControllersWithViews();
+            services.AddSwaggerGen();
 
             services.AddSpaStaticFiles(configuration =>
             {
@@ -47,12 +58,14 @@ namespace Library
                 app.UseExceptionHandler("/Error");
                 app.UseHsts();
             }
-
+            app.UseSwagger();
+            app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "My API v1"));
             app.UseHttpsRedirection();
             app.UseStaticFiles();
             app.UseSpaStaticFiles();
-
+            app.UseAuthentication();
             app.UseRouting();
+            app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
             {

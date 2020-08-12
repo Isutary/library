@@ -6,17 +6,17 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Library.Models
 {
-    public class Book
+    public class BookModel
     {
         [Key]
         [BindNever]
-        public int Id { get; set; }
+        public Guid Id { get; set; }
         [Required]
         public string Name { get; set; }
         [ForeignKey(nameof(Author))]
         [BindNever]
-        public int AuthorId { get; set; }
-        public Author Author { get; set; } 
+        public Guid AuthorId { get; set; }
+        public AuthorModel Author { get; set; } 
         public DateTime Published { get; set; }
     }
 }
