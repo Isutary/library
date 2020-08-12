@@ -1,5 +1,6 @@
 ﻿using Library.Data;
 using Library.Models;
+using Library.Models.Authors;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -20,33 +21,47 @@ namespace Library.Controllers
         [HttpGet]
         public async Task<IActionResult> GetAuthors()
         {
-            List<Author> authors = await _context.Authors.Include(x => x.Books).ToListAsync();
+            List<AuthorModel> authors = await _context.Authors.Include(x => x.Books).ToListAsync();
             return Ok(authors);
         }
 
         [HttpGet("{id}")]
-        public async Task<IActionResult> GetAuthor(int id)
+        public async Task<IActionResult> GetAuthor(Guid id)
         {
-            Author author = await _context.Authors.Where(x => x.Id == id).Include(x => x.Books).FirstOrDefaultAsync();
-            if (author == null) return NotFound(new Error { Message = $"Author with id: {id} does not exist." });
+            AuthorModel author = await _context.Authors.Where(x => x.Id == id).Include(x => x.Books).FirstOrDefaultAsync();
+            if (author == null) return NotFound(new ErrorModel { Message = $"Author with id: {id} does not exist." });
             return Ok(author);
         }
 
         [HttpPost]
-        public async Task<IActionResult> AddAuthor([FromForm] Author author)
+        public async Task<IActionResult> AddAuthor([FromForm] AddAuthorModel model)
         {
-            if (await _context.Authors.Where(x => x.FirstName == author.FirstName && x.LastName == author.LastName).FirstOrDefaultAsync() != null)
-                return BadRequest(new Error { Message = $"Author {author.FirstName} {author.LastName} already exists." });
-            _context.Authors.Add(author);
-            await _context.SaveChangesAsync();
-            return Created("", author);
+            if (ModelState.IsValid)
+            {
+                AuthorModel author = await _context.Authors.Where(x => x.FirstName == model.FirstName && x.LastName == model.LastName).FirstOrDefaultAsync();
+                if (author == null)
+                {
+                    author = new AuthorModel
+                    {
+                        FirstName = model.FirstName,
+                        LastName = model.LastName,
+                        Born = model.Born,
+                        Died = model.Died
+                    };
+                    await _context.Authors.AddAsync(author);
+                    await _context.SaveChangesAsync();
+                    return Created("", author);
+                }
+                return BadRequest(new ErrorModel { Message = $"Author {author.FirstName} {author.LastName} already exists." });
+            }
+            return BadRequest(ModelState);
         }
 
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteAuthor(int id)
+        public async Task<IActionResult> DeleteAuthor(Guid id)
         {
-            Author author = await _context.Authors.Where(x => x.Id == id).Include(x => x.Books).FirstOrDefaultAsync();
-            if (author == null) return NotFound(new Error { Message = $"Author with id: {id} does not exist." });
+            AuthorModel author = await _context.Authors.Where(x => x.Id == id).Include(x => x.Books).FirstOrDefaultAsync();
+            if (author == null) return NotFound(new ErrorModel { Message = $"Author with id: {id} does not exist." });
             _context.Authors.Remove(author);
             await _context.SaveChangesAsync();
             return Ok(author);

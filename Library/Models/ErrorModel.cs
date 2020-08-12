@@ -1,6 +1,6 @@
 ﻿namespace Library.Models
 {
-    public class Error
+    public class ErrorModel
     {
         public string Message { get; set; }
     }
