@@ -29,7 +29,7 @@ namespace Library.Controllers
         public async Task<IActionResult> GetAuthor(Guid id)
         {
             AuthorModel author = await _context.Authors.Where(x => x.Id == id).Include(x => x.Books).FirstOrDefaultAsync();
-            if (author == null) return NotFound(new ErrorModel { Message = $"Author with id: {id} does not exist." });
+            if (author == null) return NotFound(new ErrorModel($"Author with id: {id} does not exist."));
             return Ok(author);
         }
 
@@ -52,7 +52,7 @@ namespace Library.Controllers
                     await _context.SaveChangesAsync();
                     return Created("", author);
                 }
-                return BadRequest(new ErrorModel { Message = $"Author {author.FirstName} {author.LastName} already exists." });
+                return BadRequest(new ErrorModel($"Author {author.FirstName} {author.LastName} already exists."));
             }
             return BadRequest(ModelState);
         }
@@ -61,7 +61,7 @@ namespace Library.Controllers
         public async Task<IActionResult> DeleteAuthor(Guid id)
         {
             AuthorModel author = await _context.Authors.Where(x => x.Id == id).Include(x => x.Books).FirstOrDefaultAsync();
-            if (author == null) return NotFound(new ErrorModel { Message = $"Author with id: {id} does not exist." });
+            if (author == null) return NotFound(new ErrorModel($"Author with id: {id} does not exist."));
             _context.Authors.Remove(author);
             await _context.SaveChangesAsync();
             return Ok(author);

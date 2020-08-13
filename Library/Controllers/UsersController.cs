@@ -29,7 +29,7 @@ namespace Library.Controllers
         public async Task<IActionResult> GetUser(Guid id)
         {
             UserModel user = await _userManager.FindByIdAsync(id.ToString());
-            if (user == null) return NotFound(new ErrorModel { Message = $"User with id: {id} does not exist." });
+            if (user == null) return NotFound(new ErrorModel($"User with id: {id} does not exist."));
             return Ok(user);
         }
 
@@ -78,7 +78,7 @@ namespace Library.Controllers
                 }
                 return BadRequest(ModelState);
             }
-            return NotFound(new ErrorModel { Message = $"User with id: {id} does not exist." });
+            return NotFound(new ErrorModel($"User with id: {id} does not exist."));
         }
     }
 }

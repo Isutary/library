@@ -29,7 +29,7 @@ namespace Library.Controllers
         public async Task<IActionResult> GetBook(Guid id)
         {
             BookModel book = await _context.Books.Where(x => x.Id == id).Include(x => x.Author).FirstOrDefaultAsync();
-            if (book == null) return NotFound(new ErrorModel { Message = $"Book with id: {id} does not exist." });
+            if (book == null) return NotFound(new ErrorModel($"Book with id: {id} does not exist."));
             return Ok(book);
         }
 
@@ -42,8 +42,7 @@ namespace Library.Controllers
                 if (author != null)
                 {
                     BookModel book = author.Books.Where(x => x.Name == model.Name).FirstOrDefault();
-                    if (book != null) return BadRequest(new ErrorModel
-                    { Message = $"Book {model.Name}, written by {author.FirstName} {author.LastName}, already exists." });
+                    if (book != null) return BadRequest(new ErrorModel($"Book {model.Name}, written by {author.FirstName} {author.LastName}, already exists."));
                     book = new BookModel
                     {
                         Name = model.Name,
@@ -54,7 +53,7 @@ namespace Library.Controllers
                     await _context.SaveChangesAsync();
                     return Created("", book);
                 }
-                return BadRequest(new ErrorModel { Message = $"Author with id: {model.AuthorId} does not exist." });
+                return BadRequest(new ErrorModel($"Author with id: {model.AuthorId} does not exist."));
             }
             return BadRequest(ModelState);
         }
@@ -63,7 +62,7 @@ namespace Library.Controllers
         public async Task<IActionResult> DeleteBook(Guid id)
         {
             BookModel book = await _context.Books.FindAsync(id);
-            if (book == null) return NotFound(new ErrorModel { Message = $"Book with id: {id} does not exist." });
+            if (book == null) return NotFound(new ErrorModel($"Book with id: {id} does not exist."));
             _context.Books.Remove(book);
             await _context.SaveChangesAsync();
             return Ok(book);

@@ -7,6 +7,7 @@ using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 
 namespace Library.Controllers
@@ -24,7 +25,7 @@ namespace Library.Controllers
         [HttpPost("authors")]
         public async Task<IActionResult> SeedAuthors()
         {
-            if (_context.Authors.Any()) return Ok(new ErrorModel { Message = "Authors already seeded." });
+            if (_context.Authors.Any()) return Ok(new ErrorModel("Authors already seeded." ));
             try
             {
                 List<AuthorModel> authors = _seedData.Authors();
@@ -50,7 +51,7 @@ namespace Library.Controllers
         [HttpPost("books")]
         public async Task<IActionResult> SeedBooks()
         {
-            if (_context.Books.Any()) return Ok(new ErrorModel { Message = "Books already seeded." });
+            if (_context.Books.Any()) return Ok(new ErrorModel("Books already seeded."));
             try
             {
                 List<BookModel> books = _seedData.Books();
@@ -76,7 +77,7 @@ namespace Library.Controllers
         [HttpPost("users")]
         public async Task<IActionResult> SeedUsers()
         {
-            if (_userManager.Users.Any()) return Ok(new ErrorModel { Message = "Users already seeded." });
+            if (_userManager.Users.Any()) return Ok(new ErrorModel("Users already seeded."));
             List<UserModel> users = _seedData.Users();
             foreach (UserModel user in users) await _userManager.CreateAsync(user, "bibili00");
             return Created("", users);
