@@ -10,6 +10,9 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
+using IdentityModel.AspNetCore.OAuth2Introspection;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
 
 namespace Library
 {
@@ -29,12 +32,37 @@ namespace Library
 
             services.AddIdentityWithSettings<UserModel, IdentityRole, LibraryIdentityDbContext>();
 
-            //.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+            services.AddDbContext<LibraryDbContext>(options =>
+                options.UseSqlServer(Configuration.GetConnectionString("LibraryDbContext")));
+
+            services.AddTransient<SeedData>();
+
+            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+                .AddJwtBearer(options =>
+                {
+                    options.Authority = Configuration.GetValue<string>("Jwt:Issuer");
+                    options.RequireHttpsMetadata = false;
+                    options.TokenValidationParameters = new TokenValidationParameters
+                    {
+                        ValidateIssuerSigningKey = true,
+                        IssuerSigningKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(Configuration.GetValue<string>("Jwt:Key"))),
+                        ValidateIssuer = false,
+                        ValidateAudience = false
+                    };
+                });
+            services.AddAuthorization(options =>
+            {
+                options.AddPolicy("test", policy =>
+                {
+                    policy.RequireClaim("id");
+                });
+            });
+
+            //services.AddAuthentication()
             //    .AddIdentityServerAuthentication(options =>
             //    {
-            //        options.Authority = authority;
-            //        options.ApiName = configuration.GetValue<string>("IdentityServer:Audience");
-            //        options.RequireHttpsMetadata = authority.StartsWith("https");
+            //        options.Authority = Configuration.GetValue<string>("Jwt:Issuer");
+            //        options.ApiName = "lolol";
             //        options.TokenRetriever = req =>
             //        {
             //            var fromHeader = TokenRetrieval.FromAuthorizationHeader();
@@ -42,11 +70,6 @@ namespace Library
             //            return fromHeader(req) ?? fromQuery(req);
             //        };
             //    });
-
-            services.AddDbContext<LibraryDbContext>(options =>
-                options.UseSqlServer(Configuration.GetConnectionString("LibraryDbContext")));
-
-            services.AddTransient<SeedData>();
 
             services.AddControllers().AddNewtonsoftJson(options =>
                 options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore
@@ -77,8 +100,8 @@ namespace Library
             app.UseHttpsRedirection();
             app.UseStaticFiles();
             app.UseSpaStaticFiles();
-            app.UseAuthentication();
             app.UseRouting();
+            app.UseAuthentication();
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
