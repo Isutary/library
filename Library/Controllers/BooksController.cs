@@ -34,28 +34,24 @@ namespace Library.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> AddBook([FromForm] AddBookModel model)
+        public async Task<IActionResult> AddBook(AddBookModel model)
         {
-            if (ModelState.IsValid)
+            AuthorModel author = await _context.Authors.Where(x => x.Id == model.AuthorId).Include(x => x.Books).FirstOrDefaultAsync();
+            if (author != null)
             {
-                AuthorModel author = await _context.Authors.Where(x => x.Id == model.AuthorId).Include(x => x.Books).FirstOrDefaultAsync();
-                if (author != null)
+                BookModel book = author.Books.Where(x => x.Name == model.Name).FirstOrDefault();
+                if (book != null) return BadRequest(new ErrorModel($"Book {model.Name}, written by {author.FirstName} {author.LastName}, already exists."));
+                book = new BookModel
                 {
-                    BookModel book = author.Books.Where(x => x.Name == model.Name).FirstOrDefault();
-                    if (book != null) return BadRequest(new ErrorModel($"Book {model.Name}, written by {author.FirstName} {author.LastName}, already exists."));
-                    book = new BookModel
-                    {
-                        Name = model.Name,
-                        AuthorId = model.AuthorId,
-                        Published = model.Published
-                    };
-                    await _context.Books.AddAsync(book);
-                    await _context.SaveChangesAsync();
-                    return Created("", book);
-                }
-                return BadRequest(new ErrorModel($"Author with id: {model.AuthorId} does not exist."));
+                    Name = model.Name,
+                    AuthorId = model.AuthorId,
+                    Published = model.Published
+                };
+                await _context.Books.AddAsync(book);
+                await _context.SaveChangesAsync();
+                return Created("", book);
             }
-            return BadRequest(ModelState);
+            return BadRequest(new ErrorModel($"Author with id: {model.AuthorId} does not exist."));
         }
 
         [HttpDelete("{id}")]
@@ -69,3 +65,4 @@ namespace Library.Controllers
         }
     }
 }
+

@@ -5,7 +5,6 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace Library.Controllers
@@ -36,26 +35,24 @@ namespace Library.Controllers
         [HttpPost]
         public async Task<IActionResult> AddUser([FromForm] AddUserModel model)
         {
-            if (ModelState.IsValid)
+            UserModel user = new UserModel
             {
-                UserModel user = new UserModel
-                {
-                    UserName = model.Name,
-                    Email = model.Email
-                };
-                
-                IdentityResult result = await _userManager.CreateAsync(user, model.Password);
+                UserName = model.Name,
+                Email = model.Email
+            };
 
-                if (result.Succeeded) return Created("", user);
-                else
+            IdentityResult result = await _userManager.CreateAsync(user, model.Password);
+
+            if (result.Succeeded) return Created("", user);
+            else
+            {
+                foreach (IdentityError error in result.Errors)
                 {
-                    foreach (IdentityError error in result.Errors)
-                    {
-                        ModelState.AddModelError("errors", error.Description);
-                    }
+                    ModelState.AddModelError("errors", error.Description);
                 }
+
+                return BadRequest(ModelState);
             }
-            return BadRequest(ModelState);
         }
 
         [HttpDelete("{id}")]

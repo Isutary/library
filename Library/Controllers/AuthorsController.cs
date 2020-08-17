@@ -34,27 +34,23 @@ namespace Library.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> AddAuthor([FromForm] AddAuthorModel model)
+        public async Task<IActionResult> AddAuthor(AddAuthorModel model)
         {
-            if (ModelState.IsValid)
+            AuthorModel author = await _context.Authors.Where(x => x.FirstName == model.FirstName && x.LastName == model.LastName).FirstOrDefaultAsync();
+            if (author == null)
             {
-                AuthorModel author = await _context.Authors.Where(x => x.FirstName == model.FirstName && x.LastName == model.LastName).FirstOrDefaultAsync();
-                if (author == null)
+                author = new AuthorModel
                 {
-                    author = new AuthorModel
-                    {
-                        FirstName = model.FirstName,
-                        LastName = model.LastName,
-                        Born = model.Born,
-                        Died = model.Died
-                    };
-                    await _context.Authors.AddAsync(author);
-                    await _context.SaveChangesAsync();
-                    return Created("", author);
-                }
-                return BadRequest(new ErrorModel($"Author {author.FirstName} {author.LastName} already exists."));
+                    FirstName = model.FirstName,
+                    LastName = model.LastName,
+                    Born = model.Born,
+                    Died = model.Died
+                };
+                await _context.Authors.AddAsync(author);
+                await _context.SaveChangesAsync();
+                return Created("", author);
             }
-            return BadRequest(ModelState);
+            return BadRequest(new ErrorModel($"Author {author.FirstName} {author.LastName} already exists."));
         }
 
         [HttpDelete("{id}")]

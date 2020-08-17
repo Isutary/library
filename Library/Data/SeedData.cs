@@ -1,5 +1,6 @@
 ﻿using Library.Models;
 using Library.Models.Identity;
+using Library.Models.Roles;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -127,6 +128,16 @@ namespace Library.Data
                     UserName = "Admin",
                     Email = "admin@test.com"
                 }
+            };
+        }
+
+        public List<RoleModel> Roles()
+        {
+            return new List<RoleModel>()
+            {
+                new RoleModel(Constants.Roles.Admin, "Role for Admin"),
+                new RoleModel(Constants.Roles.User, "Role for User"),
+                new RoleModel(Constants.Roles.Guest, "Role for Guest")
             };
         }
     }

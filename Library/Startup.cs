@@ -1,16 +1,15 @@
 using Library.Data;
 using Library.Infrastructure;
 using Library.Models.Identity;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.SpaServices.ReactDevelopmentServer;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
-using IdentityModel.AspNetCore.OAuth2Introspection;
+using Library.Models.Roles;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
 
@@ -30,53 +29,37 @@ namespace Library
             services.AddDbContext<LibraryIdentityDbContext>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString("LibraryIdentityDbContext")));
 
-            services.AddIdentityWithSettings<UserModel, IdentityRole, LibraryIdentityDbContext>();
-
             services.AddDbContext<LibraryDbContext>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString("LibraryDbContext")));
 
+            services.AddIdentityWithSettings<UserModel, RoleModel, LibraryIdentityDbContext>();
+
             services.AddTransient<SeedData>();
-
-            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-                .AddJwtBearer(options =>
-                {
-                    options.Authority = Configuration.GetValue<string>("Jwt:Issuer");
-                    options.RequireHttpsMetadata = false;
-                    options.TokenValidationParameters = new TokenValidationParameters
-                    {
-                        ValidateIssuerSigningKey = true,
-                        IssuerSigningKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(Configuration.GetValue<string>("Jwt:Key"))),
-                        ValidateIssuer = false,
-                        ValidateAudience = false
-                    };
-                });
-            services.AddAuthorization(options =>
-            {
-                options.AddPolicy("test", policy =>
-                {
-                    policy.RequireClaim("id");
-                });
-            });
-
-            //services.AddAuthentication()
-            //    .AddIdentityServerAuthentication(options =>
-            //    {
-            //        options.Authority = Configuration.GetValue<string>("Jwt:Issuer");
-            //        options.ApiName = "lolol";
-            //        options.TokenRetriever = req =>
-            //        {
-            //            var fromHeader = TokenRetrieval.FromAuthorizationHeader();
-            //            var fromQuery = TokenRetrieval.FromQueryString();
-            //            return fromHeader(req) ?? fromQuery(req);
-            //        };
-            //    });
 
             services.AddControllers().AddNewtonsoftJson(options =>
                 options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore
             );
 
+            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+                .AddJwtBearer(options => {
+                    options.TokenValidationParameters = new TokenValidationParameters { 
+                        ValidateIssuer = true,
+                        ValidateAudience = true,
+                        ValidateLifetime = true,
+                        ValidateIssuerSigningKey = true,
+                        ValidIssuer = Configuration.GetValue<string>("Jwt:Issuer"),
+                        ValidAudience = Configuration.GetValue<string>("Jwt:Issuer"),
+                        IssuerSigningKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(Configuration.GetValue<string>("Jwt:Key")))
+                    };
+                });
+
             services.AddControllersWithViews();
             services.AddSwaggerGen();
+
+            services.AddAuthorization(options =>
+            {
+                options.AddPolicy("test", policy => policy.RequireClaim("id"));
+            });
 
             services.AddSpaStaticFiles(configuration =>
             {
