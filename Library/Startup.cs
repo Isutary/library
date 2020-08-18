@@ -34,8 +34,6 @@ namespace Library
 
             services.AddIdentityWithSettings<UserModel, RoleModel, LibraryIdentityDbContext>();
 
-            services.AddTransient<SeedData>();
-
             services.AddControllers().AddNewtonsoftJson(options =>
                 options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore
             );

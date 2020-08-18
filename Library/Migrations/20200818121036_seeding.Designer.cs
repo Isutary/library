@@ -5,12 +5,13 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
+using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
-namespace Library.Migrations.LibraryIdentityDb
+namespace Library.Migrations
 {
     [DbContext(typeof(LibraryIdentityDbContext))]
-    [Migration("20200817115135_Initial")]
-    partial class Initial
+    [Migration("20200818121036_seeding")]
+    partial class seeding
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -20,10 +21,32 @@ namespace Library.Migrations.LibraryIdentityDb
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+            modelBuilder.Entity("Library.Models.AspNetRolePermission", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("PermissionId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("RoleId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("PermissionId");
+
+                    b.HasIndex("RoleId");
+
+                    b.ToTable("AspNetRolePermissions");
+                });
+
             modelBuilder.Entity("Library.Models.Identity.UserModel", b =>
                 {
-                    b.Property<string>("Id")
-                        .HasColumnType("nvarchar(450)");
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<int>("AccessFailedCount")
                         .HasColumnType("int");
@@ -83,12 +106,85 @@ namespace Library.Migrations.LibraryIdentityDb
                         .HasFilter("[NormalizedUserName] IS NOT NULL");
 
                     b.ToTable("AspNetUsers");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = new Guid("816dc3ef-fa81-47f4-82f5-a99b60f5ea8e"),
+                            AccessFailedCount = 0,
+                            ConcurrencyStamp = "462d71f7-83f5-497d-9b51-36550fc914a5",
+                            Email = "salt@test.com",
+                            EmailConfirmed = false,
+                            LockoutEnabled = false,
+                            PasswordHash = "AQAAAAEAACcQAAAAEE4IWmCoxpOmWx7jusiQx71D2711RJuEhKQWmETOir1u+nHUIJLuY2IDNxQmNItsLQ==",
+                            PhoneNumberConfirmed = false,
+                            TwoFactorEnabled = false,
+                            UserName = "Salt"
+                        },
+                        new
+                        {
+                            Id = new Guid("62118166-5017-4732-b744-c59e24dd7a43"),
+                            AccessFailedCount = 0,
+                            ConcurrencyStamp = "bb48d16e-0124-4be3-a45b-3a501838fbd8",
+                            Email = "pepper@test.com",
+                            EmailConfirmed = false,
+                            LockoutEnabled = false,
+                            PasswordHash = "AQAAAAEAACcQAAAAEE4IWmCoxpOmWx7jusiQx71D2711RJuEhKQWmETOir1u+nHUIJLuY2IDNxQmNItsLQ==",
+                            PhoneNumberConfirmed = false,
+                            TwoFactorEnabled = false,
+                            UserName = "Pepper"
+                        },
+                        new
+                        {
+                            Id = new Guid("f3e8124a-e6eb-40dd-adfd-976df7f6b447"),
+                            AccessFailedCount = 0,
+                            ConcurrencyStamp = "09311fe6-f086-4e86-a479-953723f44d9d",
+                            Email = "test@test.com",
+                            EmailConfirmed = false,
+                            LockoutEnabled = false,
+                            PasswordHash = "AQAAAAEAACcQAAAAEE4IWmCoxpOmWx7jusiQx71D2711RJuEhKQWmETOir1u+nHUIJLuY2IDNxQmNItsLQ==",
+                            PhoneNumberConfirmed = false,
+                            TwoFactorEnabled = false,
+                            UserName = "Test"
+                        },
+                        new
+                        {
+                            Id = new Guid("d82d7385-c6b1-4090-8128-7695c4a83f50"),
+                            AccessFailedCount = 0,
+                            ConcurrencyStamp = "8bc53f5b-fb3c-49ed-9b2c-690076681e04",
+                            Email = "admin@test.com",
+                            EmailConfirmed = false,
+                            LockoutEnabled = false,
+                            PasswordHash = "AQAAAAEAACcQAAAAEE4IWmCoxpOmWx7jusiQx71D2711RJuEhKQWmETOir1u+nHUIJLuY2IDNxQmNItsLQ==",
+                            PhoneNumberConfirmed = false,
+                            TwoFactorEnabled = false,
+                            UserName = "Admin"
+                        });
+                });
+
+            modelBuilder.Entity("Library.Models.PermissionModel", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Description")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Permissions");
                 });
 
             modelBuilder.Entity("Library.Models.Roles.RoleModel", b =>
                 {
-                    b.Property<string>("Id")
-                        .HasColumnType("nvarchar(450)");
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("ConcurrencyStamp")
                         .IsConcurrencyToken()
@@ -113,9 +209,32 @@ namespace Library.Migrations.LibraryIdentityDb
                         .HasFilter("[NormalizedName] IS NOT NULL");
 
                     b.ToTable("AspNetRoles");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = new Guid("79293f5d-c7ce-4ea0-8a19-816571e14c4d"),
+                            ConcurrencyStamp = "52632652-0533-4066-bbc5-3a1d8e2b45b6",
+                            Description = "Role for admin",
+                            Name = "Admin"
+                        },
+                        new
+                        {
+                            Id = new Guid("e371f336-8278-4468-a6c7-373b9f02db52"),
+                            ConcurrencyStamp = "c1d688ec-83bb-49fb-9e05-580b02f3fc3b",
+                            Description = "Role for user",
+                            Name = "User"
+                        },
+                        new
+                        {
+                            Id = new Guid("821764a3-1f57-4413-94aa-a178b26509eb"),
+                            ConcurrencyStamp = "34ff1c21-99fe-42b9-a526-33d61d744738",
+                            Description = "Role for guest",
+                            Name = "Guest"
+                        });
                 });
 
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<System.Guid>", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -128,9 +247,8 @@ namespace Library.Migrations.LibraryIdentityDb
                     b.Property<string>("ClaimValue")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("RoleId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
+                    b.Property<Guid>("RoleId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.HasKey("Id");
 
@@ -139,7 +257,7 @@ namespace Library.Migrations.LibraryIdentityDb
                     b.ToTable("AspNetRoleClaims");
                 });
 
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<string>", b =>
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<System.Guid>", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -152,9 +270,8 @@ namespace Library.Migrations.LibraryIdentityDb
                     b.Property<string>("ClaimValue")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("UserId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.HasKey("Id");
 
@@ -163,7 +280,7 @@ namespace Library.Migrations.LibraryIdentityDb
                     b.ToTable("AspNetUserClaims");
                 });
 
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<string>", b =>
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<System.Guid>", b =>
                 {
                     b.Property<string>("LoginProvider")
                         .HasColumnType("nvarchar(450)");
@@ -174,9 +291,8 @@ namespace Library.Migrations.LibraryIdentityDb
                     b.Property<string>("ProviderDisplayName")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("UserId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.HasKey("LoginProvider", "ProviderKey");
 
@@ -185,13 +301,13 @@ namespace Library.Migrations.LibraryIdentityDb
                     b.ToTable("AspNetUserLogins");
                 });
 
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserRole<string>", b =>
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserRole<System.Guid>", b =>
                 {
-                    b.Property<string>("UserId")
-                        .HasColumnType("nvarchar(450)");
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uniqueidentifier");
 
-                    b.Property<string>("RoleId")
-                        .HasColumnType("nvarchar(450)");
+                    b.Property<Guid>("RoleId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.HasKey("UserId", "RoleId");
 
@@ -200,10 +316,10 @@ namespace Library.Migrations.LibraryIdentityDb
                     b.ToTable("AspNetUserRoles");
                 });
 
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<string>", b =>
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<System.Guid>", b =>
                 {
-                    b.Property<string>("UserId")
-                        .HasColumnType("nvarchar(450)");
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("LoginProvider")
                         .HasColumnType("nvarchar(450)");
@@ -219,7 +335,22 @@ namespace Library.Migrations.LibraryIdentityDb
                     b.ToTable("AspNetUserTokens");
                 });
 
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
+            modelBuilder.Entity("Library.Models.AspNetRolePermission", b =>
+                {
+                    b.HasOne("Library.Models.PermissionModel", "Permission")
+                        .WithMany()
+                        .HasForeignKey("PermissionId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Library.Models.Roles.RoleModel", "Role")
+                        .WithMany()
+                        .HasForeignKey("RoleId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<System.Guid>", b =>
                 {
                     b.HasOne("Library.Models.Roles.RoleModel", null)
                         .WithMany()
@@ -228,7 +359,7 @@ namespace Library.Migrations.LibraryIdentityDb
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<string>", b =>
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<System.Guid>", b =>
                 {
                     b.HasOne("Library.Models.Identity.UserModel", null)
                         .WithMany()
@@ -237,7 +368,7 @@ namespace Library.Migrations.LibraryIdentityDb
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<string>", b =>
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<System.Guid>", b =>
                 {
                     b.HasOne("Library.Models.Identity.UserModel", null)
                         .WithMany()
@@ -246,7 +377,7 @@ namespace Library.Migrations.LibraryIdentityDb
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserRole<string>", b =>
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserRole<System.Guid>", b =>
                 {
                     b.HasOne("Library.Models.Roles.RoleModel", null)
                         .WithMany()
@@ -261,7 +392,7 @@ namespace Library.Migrations.LibraryIdentityDb
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<string>", b =>
+            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<System.Guid>", b =>
                 {
                     b.HasOne("Library.Models.Identity.UserModel", null)
                         .WithMany()

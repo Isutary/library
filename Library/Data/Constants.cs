@@ -27,4 +27,5 @@
                 public const string Edit = "Authors.Edit";
             }
         }
+    }
 }

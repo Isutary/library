@@ -12,7 +12,7 @@ namespace Library.Controllers
         [CustomAuthorize]
         public IActionResult Index()
         {
-            return Ok("test");
+            return Ok(User.Identity.IsAuthenticated);
         }
     }
 }

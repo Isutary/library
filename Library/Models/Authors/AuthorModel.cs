@@ -16,6 +16,7 @@ namespace Library.Models
         public DateTime Born { get; set; }
         public DateTime Died { get; set; }
         public List<BookModel> Books { get; set; }
+
         public AuthorModel() { }
     }
 }
