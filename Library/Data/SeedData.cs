@@ -163,5 +163,52 @@ namespace Library.Data
                 }
             };
         }
+
+        public static List<PermissionModel> Permissions()
+        {
+            return new List<PermissionModel>()
+            {
+                new PermissionModel {
+                    Id = new Guid("ce607a0b-0e3e-4a9e-8dad-fbc0cbd08fcd"),
+                    Name = Constants.Permissions.Authors.Search,
+                    Description = "Ability to GET author."
+                },
+                new PermissionModel {
+                    Id = new Guid("41e8d73a-a59d-4387-a949-85265a7b2f7f"),
+                    Name = Constants.Permissions.Authors.Add,
+                    Description = "Ability to POST author."
+                },
+                new PermissionModel {
+                    Id = new Guid("c90c27d2-d947-4f4b-884b-a4305083964e"),
+                    Name = Constants.Permissions.Authors.Delete,
+                    Description = "Ability to DELETE author."
+                },
+                new PermissionModel {
+                    Id = new Guid("5dfdf747-a9c8-4186-9816-053fe86b43a0"),
+                    Name = Constants.Permissions.Authors.Edit,
+                    Description = "Ability to PUT author."
+                },
+                new PermissionModel {
+                    Id = new Guid("50bbb8c8-d49c-4da1-8690-35f555334731"),
+                    Name = Constants.Permissions.Books.Search,
+                    Description = "Ability to GET books."
+                },
+                new PermissionModel {
+                    Id = new Guid("de2623c0-e624-4a5f-9afa-08e99a0867b5"),
+                    Name = Constants.Permissions.Books.Add,
+                    Description = "Ability to POST book."
+                },
+                new PermissionModel {
+                    Id = new Guid("2ac2829b-2c9b-4626-a47c-73d3dd46a6e5"),
+                    Name = Constants.Permissions.Books.Delete,
+                    Description = "Ability to DELTE book."
+                },
+                new PermissionModel {
+                    Id = new Guid("27055641-e188-4e0f-afae-4dfd60d1b3fa"),
+                    Name = Constants.Permissions.Books.Edit,
+                    Description = "Ability to PUT book."
+                }
+            };
+        }
     }
 }

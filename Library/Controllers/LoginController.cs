@@ -44,7 +44,7 @@ namespace Library.Controllers
                     var token = handler.CreateJwtSecurityToken(
                         issuer: _configuration.GetValue<string>("Jwt:Issuer"),
                         audience: _configuration.GetValue<string>("Jwt:Issuer"),
-                        subject: new ClaimsIdentity(claims), //new ClaimsIdentity(new Claim[] { new Claim("id", user.Id.ToString())}),
+                        subject: new ClaimsIdentity(claims),
                         expires: DateTime.Now.AddDays(30),
                         signingCredentials: new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
                         ); 

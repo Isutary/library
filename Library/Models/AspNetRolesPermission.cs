@@ -7,9 +7,6 @@ namespace Library.Models
     public class AspNetRolePermission
     {
         [Required]
-        [Key]
-        public Guid Id { get; set; }
-        [Required]
         public Guid RoleId { get; set; }
         public RoleModel Role { get; set; }
         [Required]

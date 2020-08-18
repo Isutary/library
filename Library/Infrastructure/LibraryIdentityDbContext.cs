@@ -20,6 +20,8 @@ namespace Library.Infrastructure
             base.OnModelCreating(builder);
             builder.Entity<UserModel>().HasData(SeedData.Users());
             builder.Entity<RoleModel>().HasData(SeedData.Roles());
+            builder.Entity<PermissionModel>().HasData(SeedData.Permissions());
+            builder.ApplyConfiguration(new AspNetRolePermissionEntityTypeConfiguration());
         }
     }
 }
