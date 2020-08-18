@@ -1,8 +1,8 @@
-﻿using Library.Models;
+﻿using Library.Infrastructure;
+using Library.Models;
 using Library.Models.Identity;
 using Library.Models.Roles;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -138,6 +138,21 @@ namespace Library.Data
                 new RoleModel(Constants.Roles.Admin, "Role for Admin"),
                 new RoleModel(Constants.Roles.User, "Role for User"),
                 new RoleModel(Constants.Roles.Guest, "Role for Guest")
+            };
+        }
+
+        public List<PermissionModel> Permissions()
+        {
+            return new List<PermissionModel>()
+            {
+                new PermissionModel { Name = Constants.Permissions.Books.Search, Description = "Ability to see books"},
+                new PermissionModel { Name = Constants.Permissions.Books.Add, Description = "Ability to add new book"},
+                new PermissionModel { Name = Constants.Permissions.Books.Delete, Description = "Ability to delete a book"},
+                new PermissionModel { Name = Constants.Permissions.Books.Edit, Description = "Ability to edit a book"},
+                new PermissionModel { Name = Constants.Permissions.Authors.Search, Description = "Ability to see authors"},
+                new PermissionModel { Name = Constants.Permissions.Authors.Add, Description = "Ability to add new author"},
+                new PermissionModel { Name = Constants.Permissions.Authors.Delete, Description = "Ability to delete an author"},
+                new PermissionModel { Name = Constants.Permissions.Authors.Edit, Description = "Ability to edit an author"}
             };
         }
     }

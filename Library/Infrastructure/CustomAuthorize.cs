@@ -24,9 +24,7 @@ namespace Library.Infrastructure
 
         public async void OnAuthorization(AuthorizationFilterContext context)
         {
-            //context.Result = new UnauthorizedResult();
-            var a = await context.HttpContext.GetTokenAsync("Authorization");
-            context.HttpContext.Response.Headers.Add("auth", a);
+
         }
     }
 }

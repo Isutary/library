@@ -1,11 +1,13 @@
 ﻿using Library.Models;
 using Library.Models.Identity;
+using Library.Models.Roles;
 using Library.Models.Users;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using System;
+using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
@@ -31,16 +33,22 @@ namespace Library.Controllers
             {
                 if (await _userManager.CheckPasswordAsync(user, model.Password))
                 {
+                    List<Claim> claims = new List<Claim>();
+                    IList<string> rolesNames = await _userManager.GetRolesAsync(user);
+                    foreach (string role in rolesNames)
+                    {
+                        claims.Add(new Claim(role, "role"));
+                    }
                     var handler = new JwtSecurityTokenHandler();
                     var key = Encoding.ASCII.GetBytes(_configuration.GetValue<string>("Jwt:Key"));
                     var token = handler.CreateJwtSecurityToken(
                         issuer: _configuration.GetValue<string>("Jwt:Issuer"),
                         audience: _configuration.GetValue<string>("Jwt:Issuer"),
-                        subject: new ClaimsIdentity(new Claim[] { new Claim("id", user.Id.ToString())}),
+                        subject: new ClaimsIdentity(claims), //new ClaimsIdentity(new Claim[] { new Claim("id", user.Id.ToString())}),
                         expires: DateTime.Now.AddDays(30),
                         signingCredentials: new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
                         ); 
-                    return Ok(handler.WriteToken(token));
+                    return Ok(new TokenModel(handler.WriteToken(token)));
                 }
                 return Unauthorized(new ErrorModel("Incorrect password."));
             }
