@@ -1,7 +1,6 @@
 ﻿using Library.Infrastructure;
 using Library.Models;
 using Library.Models.Identity;
-using Library.Models.Roles;
 using Library.Models.Users;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;

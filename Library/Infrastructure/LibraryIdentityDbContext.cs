@@ -3,7 +3,6 @@ using Library.Infrastructure.Configuration;
 using Library.Models;
 using Library.Models.Identity;
 using Library.Models.Roles;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using System;
