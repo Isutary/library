@@ -27,6 +27,5 @@ namespace Library.Infrastructure.Configuration
 
             builder.HasData(userRoles);
         }
-
     }
 }
