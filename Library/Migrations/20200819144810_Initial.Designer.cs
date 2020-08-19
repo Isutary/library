@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Library.Migrations
 {
     [DbContext(typeof(LibraryIdentityDbContext))]
-    [Migration("20200818152212_permissionsdata")]
-    partial class permissionsdata
+    [Migration("20200819144810_Initial")]
+    partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -75,6 +75,46 @@ namespace Library.Migrations
                         {
                             RoleId = new Guid("79293f5d-c7ce-4ea0-8a19-816571e14c4d"),
                             PermissionId = new Guid("27055641-e188-4e0f-afae-4dfd60d1b3fa")
+                        },
+                        new
+                        {
+                            RoleId = new Guid("79293f5d-c7ce-4ea0-8a19-816571e14c4d"),
+                            PermissionId = new Guid("6713b9bd-7e6a-4780-84be-05f0092dc136")
+                        },
+                        new
+                        {
+                            RoleId = new Guid("79293f5d-c7ce-4ea0-8a19-816571e14c4d"),
+                            PermissionId = new Guid("d9b94b59-468a-4a57-aab1-04c27150a6c5")
+                        },
+                        new
+                        {
+                            RoleId = new Guid("79293f5d-c7ce-4ea0-8a19-816571e14c4d"),
+                            PermissionId = new Guid("18a09a24-67f4-44fe-8993-17c9aa7bbd63")
+                        },
+                        new
+                        {
+                            RoleId = new Guid("79293f5d-c7ce-4ea0-8a19-816571e14c4d"),
+                            PermissionId = new Guid("84d4cc27-b676-4a5c-83fa-8d5f83a9efab")
+                        },
+                        new
+                        {
+                            RoleId = new Guid("79293f5d-c7ce-4ea0-8a19-816571e14c4d"),
+                            PermissionId = new Guid("9e790d82-e3b4-477e-8bf6-a33b6f023c9e")
+                        },
+                        new
+                        {
+                            RoleId = new Guid("79293f5d-c7ce-4ea0-8a19-816571e14c4d"),
+                            PermissionId = new Guid("8c247bbd-a6f3-4b2a-b86b-262d9cd6b9ab")
+                        },
+                        new
+                        {
+                            RoleId = new Guid("79293f5d-c7ce-4ea0-8a19-816571e14c4d"),
+                            PermissionId = new Guid("05e8d3d1-bef0-48b1-a5d9-da6d4a90d525")
+                        },
+                        new
+                        {
+                            RoleId = new Guid("79293f5d-c7ce-4ea0-8a19-816571e14c4d"),
+                            PermissionId = new Guid("805ae7b9-a834-4e1a-a2c0-88d8d4f3b1cc")
                         },
                         new
                         {
@@ -178,12 +218,15 @@ namespace Library.Migrations
                         {
                             Id = new Guid("816dc3ef-fa81-47f4-82f5-a99b60f5ea8e"),
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "56584ca7-d5d5-4756-841e-c8f4ffd80d3a",
+                            ConcurrencyStamp = "11852dbf-eb77-4419-969f-de2d82ea865c",
                             Email = "salt@test.com",
-                            EmailConfirmed = false,
+                            EmailConfirmed = true,
                             LockoutEnabled = false,
-                            PasswordHash = "AQAAAAEAACcQAAAAEE4IWmCoxpOmWx7jusiQx71D2711RJuEhKQWmETOir1u+nHUIJLuY2IDNxQmNItsLQ==",
+                            NormalizedEmail = "SALT@TEST.COM",
+                            NormalizedUserName = "SALT",
+                            PasswordHash = "AQAAAAEAACcQAAAAEKZoIra5WAb7uXMVE/zAQZqL2a/2FO6cLEfZ2pGD86ejnCZ7/ScTahv5zWu1MRk6rw==",
                             PhoneNumberConfirmed = false,
+                            SecurityStamp = "NLHXZH3VAIQEPRBKCHKGEJTM2TXSQZZK",
                             TwoFactorEnabled = false,
                             UserName = "Salt"
                         },
@@ -191,12 +234,15 @@ namespace Library.Migrations
                         {
                             Id = new Guid("62118166-5017-4732-b744-c59e24dd7a43"),
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "89ebabc8-f327-42de-a867-9f75f813942a",
+                            ConcurrencyStamp = "ff264bdb-9659-4b45-a957-fb2b4af2e9ed",
                             Email = "pepper@test.com",
-                            EmailConfirmed = false,
+                            EmailConfirmed = true,
                             LockoutEnabled = false,
-                            PasswordHash = "AQAAAAEAACcQAAAAEE4IWmCoxpOmWx7jusiQx71D2711RJuEhKQWmETOir1u+nHUIJLuY2IDNxQmNItsLQ==",
+                            NormalizedEmail = "PEPPER@TEST.COM",
+                            NormalizedUserName = "PEPPER",
+                            PasswordHash = "AQAAAAEAACcQAAAAEKZoIra5WAb7uXMVE/zAQZqL2a/2FO6cLEfZ2pGD86ejnCZ7/ScTahv5zWu1MRk6rw==",
                             PhoneNumberConfirmed = false,
+                            SecurityStamp = "NLHXZH3VAIQEPRBKCHKGEJTM2TXSQZZK",
                             TwoFactorEnabled = false,
                             UserName = "Pepper"
                         },
@@ -204,12 +250,15 @@ namespace Library.Migrations
                         {
                             Id = new Guid("f3e8124a-e6eb-40dd-adfd-976df7f6b447"),
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "96e29082-fc4a-4abd-95f2-985a33a3a117",
+                            ConcurrencyStamp = "2d937168-25e5-474f-84b6-e980a8cc5a32",
                             Email = "test@test.com",
-                            EmailConfirmed = false,
+                            EmailConfirmed = true,
                             LockoutEnabled = false,
-                            PasswordHash = "AQAAAAEAACcQAAAAEE4IWmCoxpOmWx7jusiQx71D2711RJuEhKQWmETOir1u+nHUIJLuY2IDNxQmNItsLQ==",
+                            NormalizedEmail = "TEST@TEST.COM",
+                            NormalizedUserName = "TEST",
+                            PasswordHash = "AQAAAAEAACcQAAAAEKZoIra5WAb7uXMVE/zAQZqL2a/2FO6cLEfZ2pGD86ejnCZ7/ScTahv5zWu1MRk6rw==",
                             PhoneNumberConfirmed = false,
+                            SecurityStamp = "NLHXZH3VAIQEPRBKCHKGEJTM2TXSQZZK",
                             TwoFactorEnabled = false,
                             UserName = "Test"
                         },
@@ -217,12 +266,15 @@ namespace Library.Migrations
                         {
                             Id = new Guid("d82d7385-c6b1-4090-8128-7695c4a83f50"),
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "76d26608-a003-4a9e-813e-45b93ebeac29",
+                            ConcurrencyStamp = "87e575f3-22a1-4e90-bb11-2eb501bcbec6",
                             Email = "admin@test.com",
-                            EmailConfirmed = false,
+                            EmailConfirmed = true,
                             LockoutEnabled = false,
-                            PasswordHash = "AQAAAAEAACcQAAAAEE4IWmCoxpOmWx7jusiQx71D2711RJuEhKQWmETOir1u+nHUIJLuY2IDNxQmNItsLQ==",
+                            NormalizedEmail = "ADMIN@TEST.COM",
+                            NormalizedUserName = "ADMIN",
+                            PasswordHash = "AQAAAAEAACcQAAAAEKZoIra5WAb7uXMVE/zAQZqL2a/2FO6cLEfZ2pGD86ejnCZ7/ScTahv5zWu1MRk6rw==",
                             PhoneNumberConfirmed = false,
+                            SecurityStamp = "NLHXZH3VAIQEPRBKCHKGEJTM2TXSQZZK",
                             TwoFactorEnabled = false,
                             UserName = "Admin"
                         });
@@ -293,6 +345,54 @@ namespace Library.Migrations
                             Id = new Guid("27055641-e188-4e0f-afae-4dfd60d1b3fa"),
                             Description = "Ability to PUT book.",
                             Name = "Books.Edit"
+                        },
+                        new
+                        {
+                            Id = new Guid("6713b9bd-7e6a-4780-84be-05f0092dc136"),
+                            Description = "Ability to GET users.",
+                            Name = "Users.Search"
+                        },
+                        new
+                        {
+                            Id = new Guid("d9b94b59-468a-4a57-aab1-04c27150a6c5"),
+                            Description = "Ability to POST user.",
+                            Name = "Users.Add"
+                        },
+                        new
+                        {
+                            Id = new Guid("18a09a24-67f4-44fe-8993-17c9aa7bbd63"),
+                            Description = "Ability to DELTE user.",
+                            Name = "Users.Delete"
+                        },
+                        new
+                        {
+                            Id = new Guid("84d4cc27-b676-4a5c-83fa-8d5f83a9efab"),
+                            Description = "Ability to PUT user.",
+                            Name = "Users.Edit"
+                        },
+                        new
+                        {
+                            Id = new Guid("9e790d82-e3b4-477e-8bf6-a33b6f023c9e"),
+                            Description = "Ability to GET roles.",
+                            Name = "Roles.Search"
+                        },
+                        new
+                        {
+                            Id = new Guid("8c247bbd-a6f3-4b2a-b86b-262d9cd6b9ab"),
+                            Description = "Ability to POST role.",
+                            Name = "Roles.Add"
+                        },
+                        new
+                        {
+                            Id = new Guid("05e8d3d1-bef0-48b1-a5d9-da6d4a90d525"),
+                            Description = "Ability to DELTE role.",
+                            Name = "Roles.Delete"
+                        },
+                        new
+                        {
+                            Id = new Guid("805ae7b9-a834-4e1a-a2c0-88d8d4f3b1cc"),
+                            Description = "Ability to PUT role.",
+                            Name = "Roles.Edit"
                         });
                 });
 
@@ -330,23 +430,26 @@ namespace Library.Migrations
                         new
                         {
                             Id = new Guid("79293f5d-c7ce-4ea0-8a19-816571e14c4d"),
-                            ConcurrencyStamp = "bf141d25-c260-4309-b364-cba9b3ab47ba",
+                            ConcurrencyStamp = "e7dd0ad8-3db8-4a2c-b806-5e63fafb2698",
                             Description = "Role for admin",
-                            Name = "Admin"
+                            Name = "Admin",
+                            NormalizedName = "ADMIN"
                         },
                         new
                         {
                             Id = new Guid("e371f336-8278-4468-a6c7-373b9f02db52"),
-                            ConcurrencyStamp = "3ff0487d-2766-43a2-accf-09d3cf6f4d9d",
+                            ConcurrencyStamp = "197266c5-d8d1-4fe4-bd63-a2372ffbe0a7",
                             Description = "Role for user",
-                            Name = "User"
+                            Name = "User",
+                            NormalizedName = "USER"
                         },
                         new
                         {
                             Id = new Guid("821764a3-1f57-4413-94aa-a178b26509eb"),
-                            ConcurrencyStamp = "bae7e87d-5d03-479a-a751-d8053c63fc19",
+                            ConcurrencyStamp = "a9df1c64-95f9-4c50-9abd-7298e2bb96dd",
                             Description = "Role for guest",
-                            Name = "Guest"
+                            Name = "Guest",
+                            NormalizedName = "GUEST"
                         });
                 });
 
@@ -430,6 +533,23 @@ namespace Library.Migrations
                     b.HasIndex("RoleId");
 
                     b.ToTable("AspNetUserRoles");
+
+                    b.HasData(
+                        new
+                        {
+                            UserId = new Guid("d82d7385-c6b1-4090-8128-7695c4a83f50"),
+                            RoleId = new Guid("79293f5d-c7ce-4ea0-8a19-816571e14c4d")
+                        },
+                        new
+                        {
+                            UserId = new Guid("62118166-5017-4732-b744-c59e24dd7a43"),
+                            RoleId = new Guid("e371f336-8278-4468-a6c7-373b9f02db52")
+                        },
+                        new
+                        {
+                            UserId = new Guid("f3e8124a-e6eb-40dd-adfd-976df7f6b447"),
+                            RoleId = new Guid("821764a3-1f57-4413-94aa-a178b26509eb")
+                        });
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<System.Guid>", b =>

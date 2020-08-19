@@ -216,7 +216,7 @@ namespace Library.Migrations
                         {
                             Id = new Guid("816dc3ef-fa81-47f4-82f5-a99b60f5ea8e"),
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "f1b837ea-d354-4bab-a26f-604952908a1d",
+                            ConcurrencyStamp = "11852dbf-eb77-4419-969f-de2d82ea865c",
                             Email = "salt@test.com",
                             EmailConfirmed = true,
                             LockoutEnabled = false,
@@ -232,7 +232,7 @@ namespace Library.Migrations
                         {
                             Id = new Guid("62118166-5017-4732-b744-c59e24dd7a43"),
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "cfb68733-f8ec-44d8-9df0-a1c714cff920",
+                            ConcurrencyStamp = "ff264bdb-9659-4b45-a957-fb2b4af2e9ed",
                             Email = "pepper@test.com",
                             EmailConfirmed = true,
                             LockoutEnabled = false,
@@ -248,7 +248,7 @@ namespace Library.Migrations
                         {
                             Id = new Guid("f3e8124a-e6eb-40dd-adfd-976df7f6b447"),
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "7eabf01e-b61b-4fa7-8842-e15bdde71ddb",
+                            ConcurrencyStamp = "2d937168-25e5-474f-84b6-e980a8cc5a32",
                             Email = "test@test.com",
                             EmailConfirmed = true,
                             LockoutEnabled = false,
@@ -264,7 +264,7 @@ namespace Library.Migrations
                         {
                             Id = new Guid("d82d7385-c6b1-4090-8128-7695c4a83f50"),
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "4aecfbfb-ebdf-4f22-bc8f-4d9173f23b3a",
+                            ConcurrencyStamp = "87e575f3-22a1-4e90-bb11-2eb501bcbec6",
                             Email = "admin@test.com",
                             EmailConfirmed = true,
                             LockoutEnabled = false,
@@ -415,9 +415,6 @@ namespace Library.Migrations
                         .HasColumnType("nvarchar(256)")
                         .HasMaxLength(256);
 
-                    b.Property<Guid?>("UserModelId")
-                        .HasColumnType("uniqueidentifier");
-
                     b.HasKey("Id");
 
                     b.HasIndex("NormalizedName")
@@ -425,15 +422,13 @@ namespace Library.Migrations
                         .HasName("RoleNameIndex")
                         .HasFilter("[NormalizedName] IS NOT NULL");
 
-                    b.HasIndex("UserModelId");
-
                     b.ToTable("AspNetRoles");
 
                     b.HasData(
                         new
                         {
                             Id = new Guid("79293f5d-c7ce-4ea0-8a19-816571e14c4d"),
-                            ConcurrencyStamp = "390e187f-9f1a-4f0c-af9d-6bfca600045e",
+                            ConcurrencyStamp = "e7dd0ad8-3db8-4a2c-b806-5e63fafb2698",
                             Description = "Role for admin",
                             Name = "Admin",
                             NormalizedName = "ADMIN"
@@ -441,7 +436,7 @@ namespace Library.Migrations
                         new
                         {
                             Id = new Guid("e371f336-8278-4468-a6c7-373b9f02db52"),
-                            ConcurrencyStamp = "455d88c4-b4d0-499f-a49c-be40aefd59a3",
+                            ConcurrencyStamp = "197266c5-d8d1-4fe4-bd63-a2372ffbe0a7",
                             Description = "Role for user",
                             Name = "User",
                             NormalizedName = "USER"
@@ -449,7 +444,7 @@ namespace Library.Migrations
                         new
                         {
                             Id = new Guid("821764a3-1f57-4413-94aa-a178b26509eb"),
-                            ConcurrencyStamp = "682b106b-bc84-4e6e-854c-709e0071d90e",
+                            ConcurrencyStamp = "a9df1c64-95f9-4c50-9abd-7298e2bb96dd",
                             Description = "Role for guest",
                             Name = "Guest",
                             NormalizedName = "GUEST"
@@ -587,13 +582,6 @@ namespace Library.Migrations
                         .HasForeignKey("RoleId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-                });
-
-            modelBuilder.Entity("Library.Models.Roles.RoleModel", b =>
-                {
-                    b.HasOne("Library.Models.Identity.UserModel", null)
-                        .WithMany("Roles")
-                        .HasForeignKey("UserModelId");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<System.Guid>", b =>
