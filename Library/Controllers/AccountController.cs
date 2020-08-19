@@ -20,16 +20,16 @@ namespace Library.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
-    public class LoginController : Controller
+    public class AccountController : Controller
     {
         private readonly UserManager<UserModel> _userManager;
         private readonly IConfiguration _configuration;
         private readonly LibraryIdentityDbContext _identity;
 
-        public LoginController(UserManager<UserModel> userManager, IConfiguration configuration, LibraryIdentityDbContext identity)
+        public AccountController(UserManager<UserModel> userManager, IConfiguration configuration, LibraryIdentityDbContext identity)
             => (_userManager, _configuration, _identity) = (userManager, configuration, identity);
 
-        [HttpPost]
+        [HttpPost("login")]
         [AllowAnonymous]
         public async Task<IActionResult> Login(LoginModel model)
         {
