@@ -38,7 +38,7 @@ namespace Library.Controllers
 
         [HttpPost]
         [CustomAuthorize(Constants.Permissions.Users.Add)]
-        public async Task<IActionResult> AddUser([FromForm] AddUserModel model)
+        public async Task<IActionResult> AddUser(AddUserModel model)
         {
             UserModel user = new UserModel
             {
