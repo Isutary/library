@@ -1,6 +1,7 @@
 ﻿using Library.Models;
 using Library.Models.Identity;
 using Library.Models.Roles;
+using Microsoft.AspNetCore.Identity;
 using System;
 using System.Collections.Generic;
 
@@ -202,6 +203,24 @@ namespace Library.Data
                 new PermissionModel(new Guid("8c247bbd-a6f3-4b2a-b86b-262d9cd6b9ab"), Constants.Permissions.Roles.Add, "Ability to POST role."),
                 new PermissionModel(new Guid("05e8d3d1-bef0-48b1-a5d9-da6d4a90d525"), Constants.Permissions.Roles.Delete, "Ability to DELTE role."),
                 new PermissionModel(new Guid("805ae7b9-a834-4e1a-a2c0-88d8d4f3b1cc"), Constants.Permissions.Roles.Edit, "Ability to PUT role.")
+            };
+        }
+
+        public static List<IdentityUserRole<Guid>> UserRole()
+        {
+            return new List<IdentityUserRole<Guid>>() {
+                new IdentityUserRole<Guid> {
+                    UserId = new Guid("D82D7385-C6B1-4090-8128-7695C4A83F50"),
+                    RoleId = new Guid("79293F5D-C7CE-4EA0-8A19-816571E14C4D")
+                },
+                new IdentityUserRole<Guid> {
+                    UserId = new Guid("62118166-5017-4732-B744-C59E24DD7A43"),
+                    RoleId = new Guid("E371F336-8278-4468-A6C7-373B9F02DB52")
+                },
+                new IdentityUserRole<Guid> {
+                    UserId = new Guid("F3E8124A-E6EB-40DD-ADFD-976DF7F6B447"),
+                    RoleId = new Guid("821764A3-1F57-4413-94AA-A178B26509EB")
+                }
             };
         }
     }
