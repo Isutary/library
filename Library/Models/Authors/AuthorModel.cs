@@ -1,5 +1,4 @@
-﻿using Microsoft.AspNetCore.Mvc.ModelBinding;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
@@ -16,7 +15,5 @@ namespace Library.Models
         public DateTime Born { get; set; }
         public DateTime Died { get; set; }
         public List<BookModel> Books { get; set; }
-
-        public AuthorModel() { }
     }
 }
