@@ -14,8 +14,8 @@ namespace Library.Models
         [Required]
         public string Name { get; set; }
         [ForeignKey(nameof(Author))]
-        [BindNever]
         public Guid AuthorId { get; set; }
+        [BindNever]
         public AuthorModel Author { get; set; } 
         public DateTime Published { get; set; }
     }

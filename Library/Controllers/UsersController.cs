@@ -2,6 +2,7 @@
 using Library.Infrastructure;
 using Library.Models;
 using Library.Models.Identity;
+using Library.Models.Users;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -80,6 +81,20 @@ namespace Library.Controllers
                     }
                 }
                 return BadRequest(ModelState);
+            }
+            return NotFound(new ErrorModel($"User with id: {id} does not exist."));
+        }
+
+        [HttpPut("{id}")]
+        public async Task<IActionResult> EditUser(Guid id, EditUserModel model)
+        {
+            UserModel user = await _userManager.FindByIdAsync(id.ToString());
+            if (user != null)
+            {
+                user.Email = model.Email;
+                user.UserName = model.UserName;
+                await _userManager.UpdateAsync(user);
+                return Ok(user);
             }
             return NotFound(new ErrorModel($"User with id: {id} does not exist."));
         }

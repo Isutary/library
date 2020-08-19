@@ -59,5 +59,20 @@ namespace Library.Controllers
             await _roleManager.DeleteAsync(role);
             return Ok(role);
         }
+
+        [HttpPut("{id}")]
+        [CustomAuthorize(Constants.Permissions.Roles.Edit)]
+        public async Task<IActionResult> EditRole(Guid id, AddRoleModel model)
+        {
+            RoleModel role = await _roleManager.FindByIdAsync(id.ToString());
+            if (role != null)
+            {
+                role.Name = model.Name;
+                role.Description = model.Description;
+                await _roleManager.UpdateAsync(role);
+                return Ok(role);
+            }
+            return NotFound(new ErrorModel($"Role with id: {id} does not exist."));
+        }
     }
 }

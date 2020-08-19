@@ -121,6 +121,7 @@ namespace Library.Data
                     Email = "salt@test.com",
                     NormalizedEmail = "salt@test.com".ToUpper(),
                     PasswordHash = "AQAAAAEAACcQAAAAEKZoIra5WAb7uXMVE/zAQZqL2a/2FO6cLEfZ2pGD86ejnCZ7/ScTahv5zWu1MRk6rw==",
+                    SecurityStamp = "NLHXZH3VAIQEPRBKCHKGEJTM2TXSQZZK",
                     EmailConfirmed = true
                 },
                 new UserModel
@@ -131,6 +132,7 @@ namespace Library.Data
                     Email = "pepper@test.com",
                     NormalizedEmail = "pepper@test.com".ToUpper(),
                     PasswordHash = "AQAAAAEAACcQAAAAEKZoIra5WAb7uXMVE/zAQZqL2a/2FO6cLEfZ2pGD86ejnCZ7/ScTahv5zWu1MRk6rw==",
+                    SecurityStamp = "NLHXZH3VAIQEPRBKCHKGEJTM2TXSQZZK",
                     EmailConfirmed = true
                 },
                 new UserModel
@@ -141,6 +143,7 @@ namespace Library.Data
                     Email = "test@test.com",
                     NormalizedEmail = "test@test.com".ToUpper(),
                     PasswordHash = "AQAAAAEAACcQAAAAEKZoIra5WAb7uXMVE/zAQZqL2a/2FO6cLEfZ2pGD86ejnCZ7/ScTahv5zWu1MRk6rw==",
+                    SecurityStamp = "NLHXZH3VAIQEPRBKCHKGEJTM2TXSQZZK",
                     EmailConfirmed = true
                 },
                 new UserModel {
@@ -150,6 +153,7 @@ namespace Library.Data
                     Email = "admin@test.com",
                     NormalizedEmail = "admin@test.com".ToUpper(),
                     PasswordHash = "AQAAAAEAACcQAAAAEKZoIra5WAb7uXMVE/zAQZqL2a/2FO6cLEfZ2pGD86ejnCZ7/ScTahv5zWu1MRk6rw==",
+                    SecurityStamp = "NLHXZH3VAIQEPRBKCHKGEJTM2TXSQZZK",
                     EmailConfirmed = true
                 }
             };

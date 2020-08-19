@@ -55,7 +55,7 @@ namespace Library.Controllers
                 await _context.SaveChangesAsync();
                 return Created("", book);
             }
-            return BadRequest(new ErrorModel($"Author with id: {model.AuthorId} does not exist."));
+            return NotFound(new ErrorModel($"Author with id: {model.AuthorId} does not exist."));
         }
 
         [HttpDelete("{id}")]
@@ -67,6 +67,27 @@ namespace Library.Controllers
             _context.Books.Remove(book);
             await _context.SaveChangesAsync();
             return Ok(book);
+        }
+
+        [HttpPut("{id}")]
+        [CustomAuthorize(Constants.Permissions.Books.Edit)]
+        public async Task<IActionResult> EditBook(Guid id, AddBookModel model)
+        {
+            BookModel book = await _context.Books.Include(x => x.Author).Where(x => x.Id == id).FirstOrDefaultAsync();
+            if (book != null)
+            {
+                AuthorModel author = await _context.Authors.FindAsync(model.AuthorId);
+                if (author != null)
+                {
+                    book.Name = model.Name;
+                    book.AuthorId = model.AuthorId;
+                    book.Published = model.Published;
+                    await _context.SaveChangesAsync();
+                    return Ok(book);
+                }
+                return NotFound(new ErrorModel($"Author with id: {model.AuthorId} does not exist."));
+            }
+            return NotFound(new ErrorModel($"Book with id: {id} does not exist."));
         }
     }
 }

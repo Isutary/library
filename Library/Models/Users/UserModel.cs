@@ -1,6 +1,8 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using Library.Models.Roles;
+using Microsoft.AspNetCore.Identity;
 using Newtonsoft.Json;
 using System;
+using System.Collections.Generic;
 
 namespace Library.Models.Identity
 {
