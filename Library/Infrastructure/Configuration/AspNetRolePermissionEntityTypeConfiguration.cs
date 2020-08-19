@@ -29,7 +29,7 @@ namespace Library.Infrastructure
                 .Where(x => x.Name == Authors.Search || x.Name == Books.Search || x.Name == Authors.Add || x.Name == Books.Add)
                 .Select(x => new AspNetRolePermission { PermissionId = x.Id, RoleId = UserRole.Id }).ToList();
             List<AspNetRolePermission> PermissionsForGuest = permissions
-                .Where(x => x.Name == Constants.Permissions.Authors.Search || x.Name == Constants.Permissions.Books.Search)
+                .Where(x => x.Name == Authors.Search || x.Name == Books.Search)
                 .Select(x => new AspNetRolePermission { PermissionId = x.Id, RoleId = GuestRole.Id }).ToList();
 
             builder.HasData(PermissionsForAdmin);

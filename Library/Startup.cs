@@ -54,11 +54,6 @@ namespace Library
             services.AddControllersWithViews();
             services.AddSwaggerGen();
 
-            services.AddAuthorization(options =>
-            {
-                options.AddPolicy("test", policy => policy.RequireClaim("id"));
-            });
-
             services.AddSpaStaticFiles(configuration =>
             {
                 configuration.RootPath = "ClientApp/build";

@@ -116,28 +116,40 @@ namespace Library.Data
                 {
                     Id = new Guid("816dc3ef-fa81-47f4-82f5-a99b60f5ea8e"),
                     UserName = "Salt",
+                    NormalizedUserName = "Salt".ToUpper(),
                     Email = "salt@test.com",
-                    PasswordHash = "AQAAAAEAACcQAAAAEE4IWmCoxpOmWx7jusiQx71D2711RJuEhKQWmETOir1u+nHUIJLuY2IDNxQmNItsLQ=="
+                    NormalizedEmail = "salt@test.com".ToUpper(),
+                    PasswordHash = "AQAAAAEAACcQAAAAEKZoIra5WAb7uXMVE/zAQZqL2a/2FO6cLEfZ2pGD86ejnCZ7/ScTahv5zWu1MRk6rw==",
+                    EmailConfirmed = true
                 },
                 new UserModel
                 {
                     Id = new Guid("62118166-5017-4732-b744-c59e24dd7a43"),
                     UserName = "Pepper",
+                    NormalizedUserName = "Pepper".ToUpper(),
                     Email = "pepper@test.com",
-                    PasswordHash = "AQAAAAEAACcQAAAAEE4IWmCoxpOmWx7jusiQx71D2711RJuEhKQWmETOir1u+nHUIJLuY2IDNxQmNItsLQ=="
+                    NormalizedEmail = "pepper@test.com".ToUpper(),
+                    PasswordHash = "AQAAAAEAACcQAAAAEKZoIra5WAb7uXMVE/zAQZqL2a/2FO6cLEfZ2pGD86ejnCZ7/ScTahv5zWu1MRk6rw==",
+                    EmailConfirmed = true
                 },
                 new UserModel
                 {
                     Id = new Guid("f3e8124a-e6eb-40dd-adfd-976df7f6b447"),
                     UserName = "Test",
+                    NormalizedUserName = "Test".ToUpper(),
                     Email = "test@test.com",
-                    PasswordHash = "AQAAAAEAACcQAAAAEE4IWmCoxpOmWx7jusiQx71D2711RJuEhKQWmETOir1u+nHUIJLuY2IDNxQmNItsLQ=="
+                    NormalizedEmail = "test@test.com".ToUpper(),
+                    PasswordHash = "AQAAAAEAACcQAAAAEKZoIra5WAb7uXMVE/zAQZqL2a/2FO6cLEfZ2pGD86ejnCZ7/ScTahv5zWu1MRk6rw==",
+                    EmailConfirmed = true
                 },
                 new UserModel {
                     Id = new Guid("d82d7385-c6b1-4090-8128-7695c4a83f50"),
                     UserName = "Admin",
+                    NormalizedUserName = "Admin".ToUpper(),
                     Email = "admin@test.com",
-                    PasswordHash = "AQAAAAEAACcQAAAAEE4IWmCoxpOmWx7jusiQx71D2711RJuEhKQWmETOir1u+nHUIJLuY2IDNxQmNItsLQ=="
+                    NormalizedEmail = "admin@test.com".ToUpper(),
+                    PasswordHash = "AQAAAAEAACcQAAAAEKZoIra5WAb7uXMVE/zAQZqL2a/2FO6cLEfZ2pGD86ejnCZ7/ScTahv5zWu1MRk6rw==",
+                    EmailConfirmed = true
                 }
             };
         }
@@ -149,16 +161,19 @@ namespace Library.Data
                 new RoleModel {
                     Id = new Guid("79293f5d-c7ce-4ea0-8a19-816571e14c4d"),
                     Name = Constants.Roles.Admin,
+                    NormalizedName = Constants.Roles.Admin.ToUpper(),
                     Description = "Role for admin"
                 },
                 new RoleModel {
                     Id = new Guid("e371f336-8278-4468-a6c7-373b9f02db52"),
                     Name = Constants.Roles.User,
+                    NormalizedName = Constants.Roles.User.ToUpper(),
                     Description = "Role for user"
                 },
                 new RoleModel {
                     Id = new Guid("821764a3-1f57-4413-94aa-a178b26509eb"),
                     Name = Constants.Roles.Guest,
+                    NormalizedName = Constants.Roles.Guest.ToUpper(),
                     Description = "Role for guest"
                 }
             };
@@ -168,46 +183,25 @@ namespace Library.Data
         {
             return new List<PermissionModel>()
             {
-                new PermissionModel {
-                    Id = new Guid("ce607a0b-0e3e-4a9e-8dad-fbc0cbd08fcd"),
-                    Name = Constants.Permissions.Authors.Search,
-                    Description = "Ability to GET author."
-                },
-                new PermissionModel {
-                    Id = new Guid("41e8d73a-a59d-4387-a949-85265a7b2f7f"),
-                    Name = Constants.Permissions.Authors.Add,
-                    Description = "Ability to POST author."
-                },
-                new PermissionModel {
-                    Id = new Guid("c90c27d2-d947-4f4b-884b-a4305083964e"),
-                    Name = Constants.Permissions.Authors.Delete,
-                    Description = "Ability to DELETE author."
-                },
-                new PermissionModel {
-                    Id = new Guid("5dfdf747-a9c8-4186-9816-053fe86b43a0"),
-                    Name = Constants.Permissions.Authors.Edit,
-                    Description = "Ability to PUT author."
-                },
-                new PermissionModel {
-                    Id = new Guid("50bbb8c8-d49c-4da1-8690-35f555334731"),
-                    Name = Constants.Permissions.Books.Search,
-                    Description = "Ability to GET books."
-                },
-                new PermissionModel {
-                    Id = new Guid("de2623c0-e624-4a5f-9afa-08e99a0867b5"),
-                    Name = Constants.Permissions.Books.Add,
-                    Description = "Ability to POST book."
-                },
-                new PermissionModel {
-                    Id = new Guid("2ac2829b-2c9b-4626-a47c-73d3dd46a6e5"),
-                    Name = Constants.Permissions.Books.Delete,
-                    Description = "Ability to DELTE book."
-                },
-                new PermissionModel {
-                    Id = new Guid("27055641-e188-4e0f-afae-4dfd60d1b3fa"),
-                    Name = Constants.Permissions.Books.Edit,
-                    Description = "Ability to PUT book."
-                }
+                new PermissionModel(new Guid("ce607a0b-0e3e-4a9e-8dad-fbc0cbd08fcd"), Constants.Permissions.Authors.Search, "Ability to GET author."),
+                new PermissionModel(new Guid("41e8d73a-a59d-4387-a949-85265a7b2f7f"), Constants.Permissions.Authors.Add, "Ability to POST author."),
+                new PermissionModel(new Guid("c90c27d2-d947-4f4b-884b-a4305083964e"), Constants.Permissions.Authors.Delete, "Ability to DELETE author."),
+                new PermissionModel(new Guid("5dfdf747-a9c8-4186-9816-053fe86b43a0"), Constants.Permissions.Authors.Edit, "Ability to PUT author."),
+
+                new PermissionModel(new Guid("50bbb8c8-d49c-4da1-8690-35f555334731"), Constants.Permissions.Books.Search, "Ability to GET books."),
+                new PermissionModel(new Guid("de2623c0-e624-4a5f-9afa-08e99a0867b5"), Constants.Permissions.Books.Add, "Ability to POST book."),
+                new PermissionModel(new Guid("2ac2829b-2c9b-4626-a47c-73d3dd46a6e5"), Constants.Permissions.Books.Delete, "Ability to DELTE book."),
+                new PermissionModel(new Guid("27055641-e188-4e0f-afae-4dfd60d1b3fa"), Constants.Permissions.Books.Edit, "Ability to PUT book."),
+
+                new PermissionModel(new Guid("6713b9bd-7e6a-4780-84be-05f0092dc136"), Constants.Permissions.Users.Search, "Ability to GET users."),
+                new PermissionModel(new Guid("d9b94b59-468a-4a57-aab1-04c27150a6c5"), Constants.Permissions.Users.Add, "Ability to POST user."),
+                new PermissionModel(new Guid("18a09a24-67f4-44fe-8993-17c9aa7bbd63"), Constants.Permissions.Users.Delete, "Ability to DELTE user."),
+                new PermissionModel(new Guid("84d4cc27-b676-4a5c-83fa-8d5f83a9efab"), Constants.Permissions.Users.Edit, "Ability to PUT user."),
+
+                new PermissionModel(new Guid("9e790d82-e3b4-477e-8bf6-a33b6f023c9e"), Constants.Permissions.Roles.Search, "Ability to GET roles."),
+                new PermissionModel(new Guid("8c247bbd-a6f3-4b2a-b86b-262d9cd6b9ab"), Constants.Permissions.Roles.Add, "Ability to POST role."),
+                new PermissionModel(new Guid("05e8d3d1-bef0-48b1-a5d9-da6d4a90d525"), Constants.Permissions.Roles.Delete, "Ability to DELTE role."),
+                new PermissionModel(new Guid("805ae7b9-a834-4e1a-a2c0-88d8d4f3b1cc"), Constants.Permissions.Roles.Edit, "Ability to PUT role.")
             };
         }
     }

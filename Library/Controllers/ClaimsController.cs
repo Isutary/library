@@ -1,5 +1,5 @@
-﻿using Library.Infrastructure;
-using Microsoft.AspNetCore.Authorization;
+﻿using Library.Data;
+using Library.Infrastructure;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Library.Controllers
@@ -9,10 +9,10 @@ namespace Library.Controllers
     public class ClaimsController : Controller
     {
         [HttpGet]
-        [CustomAuthorize]
+        [CustomAuthorize(Constants.Permissions.Authors.Add)]
         public IActionResult Index()
         {
-            return Ok(User.Identity.IsAuthenticated);
+            return Ok("works");
         }
     }
 }

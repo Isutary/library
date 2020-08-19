@@ -1,4 +1,6 @@
-﻿using Library.Models;
+﻿using Library.Data;
+using Library.Infrastructure;
+using Library.Models;
 using Library.Models.Identity;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -18,6 +20,7 @@ namespace Library.Controllers
         public UsersController(UserManager<UserModel> userManager) => _userManager = userManager;
 
         [HttpGet]
+        [CustomAuthorize(Constants.Permissions.Users.Search)]
         public async Task<IActionResult> GetUsers()
         {
             List<UserModel> users = await _userManager.Users.ToListAsync();
@@ -25,6 +28,7 @@ namespace Library.Controllers
         }
 
         [HttpGet("{id}")]
+        [CustomAuthorize(Constants.Permissions.Users.Search)]
         public async Task<IActionResult> GetUser(Guid id)
         {
             UserModel user = await _userManager.FindByIdAsync(id.ToString());
@@ -33,6 +37,7 @@ namespace Library.Controllers
         }
 
         [HttpPost]
+        [CustomAuthorize(Constants.Permissions.Users.Add)]
         public async Task<IActionResult> AddUser([FromForm] AddUserModel model)
         {
             UserModel user = new UserModel
@@ -56,6 +61,7 @@ namespace Library.Controllers
         }
 
         [HttpDelete("{id}")]
+        [CustomAuthorize(Constants.Permissions.Users.Delete)]
         public async Task<IActionResult> DeleteUser(Guid id)
         {
             UserModel user = await _userManager.FindByIdAsync(id.ToString());

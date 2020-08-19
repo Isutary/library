@@ -4,14 +4,16 @@ using Library.Infrastructure;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace Library.Migrations
 {
     [DbContext(typeof(LibraryIdentityDbContext))]
-    partial class LibraryIdentityDbContextModelSnapshot : ModelSnapshot
+    [Migration("20200819081017_normalizedidentity")]
+    partial class normalizedidentity
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -73,46 +75,6 @@ namespace Library.Migrations
                         {
                             RoleId = new Guid("79293f5d-c7ce-4ea0-8a19-816571e14c4d"),
                             PermissionId = new Guid("27055641-e188-4e0f-afae-4dfd60d1b3fa")
-                        },
-                        new
-                        {
-                            RoleId = new Guid("79293f5d-c7ce-4ea0-8a19-816571e14c4d"),
-                            PermissionId = new Guid("6713b9bd-7e6a-4780-84be-05f0092dc136")
-                        },
-                        new
-                        {
-                            RoleId = new Guid("79293f5d-c7ce-4ea0-8a19-816571e14c4d"),
-                            PermissionId = new Guid("d9b94b59-468a-4a57-aab1-04c27150a6c5")
-                        },
-                        new
-                        {
-                            RoleId = new Guid("79293f5d-c7ce-4ea0-8a19-816571e14c4d"),
-                            PermissionId = new Guid("18a09a24-67f4-44fe-8993-17c9aa7bbd63")
-                        },
-                        new
-                        {
-                            RoleId = new Guid("79293f5d-c7ce-4ea0-8a19-816571e14c4d"),
-                            PermissionId = new Guid("84d4cc27-b676-4a5c-83fa-8d5f83a9efab")
-                        },
-                        new
-                        {
-                            RoleId = new Guid("79293f5d-c7ce-4ea0-8a19-816571e14c4d"),
-                            PermissionId = new Guid("9e790d82-e3b4-477e-8bf6-a33b6f023c9e")
-                        },
-                        new
-                        {
-                            RoleId = new Guid("79293f5d-c7ce-4ea0-8a19-816571e14c4d"),
-                            PermissionId = new Guid("8c247bbd-a6f3-4b2a-b86b-262d9cd6b9ab")
-                        },
-                        new
-                        {
-                            RoleId = new Guid("79293f5d-c7ce-4ea0-8a19-816571e14c4d"),
-                            PermissionId = new Guid("05e8d3d1-bef0-48b1-a5d9-da6d4a90d525")
-                        },
-                        new
-                        {
-                            RoleId = new Guid("79293f5d-c7ce-4ea0-8a19-816571e14c4d"),
-                            PermissionId = new Guid("805ae7b9-a834-4e1a-a2c0-88d8d4f3b1cc")
                         },
                         new
                         {
@@ -216,7 +178,7 @@ namespace Library.Migrations
                         {
                             Id = new Guid("816dc3ef-fa81-47f4-82f5-a99b60f5ea8e"),
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "9357ce6b-f0ac-4d4d-9db6-fd7efe5dfa6f",
+                            ConcurrencyStamp = "eeace2e2-6822-4a95-9cee-879c3357ab6e",
                             Email = "salt@test.com",
                             EmailConfirmed = true,
                             LockoutEnabled = false,
@@ -231,7 +193,7 @@ namespace Library.Migrations
                         {
                             Id = new Guid("62118166-5017-4732-b744-c59e24dd7a43"),
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "7fc480c0-59d1-4093-af26-0c09dbcfa969",
+                            ConcurrencyStamp = "dc5f5dfb-bb17-4f7f-b03d-d39385c2dd7d",
                             Email = "pepper@test.com",
                             EmailConfirmed = true,
                             LockoutEnabled = false,
@@ -246,7 +208,7 @@ namespace Library.Migrations
                         {
                             Id = new Guid("f3e8124a-e6eb-40dd-adfd-976df7f6b447"),
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "8fe7f641-88e0-49b8-9cd8-5a0effe98d1f",
+                            ConcurrencyStamp = "e356f130-89b1-4132-8b20-0258056a5239",
                             Email = "test@test.com",
                             EmailConfirmed = true,
                             LockoutEnabled = false,
@@ -261,7 +223,7 @@ namespace Library.Migrations
                         {
                             Id = new Guid("d82d7385-c6b1-4090-8128-7695c4a83f50"),
                             AccessFailedCount = 0,
-                            ConcurrencyStamp = "41c71f00-b5de-4e8c-8688-89898096ce63",
+                            ConcurrencyStamp = "b185c03a-0693-430f-b421-b8aea664e8b1",
                             Email = "admin@test.com",
                             EmailConfirmed = true,
                             LockoutEnabled = false,
@@ -339,54 +301,6 @@ namespace Library.Migrations
                             Id = new Guid("27055641-e188-4e0f-afae-4dfd60d1b3fa"),
                             Description = "Ability to PUT book.",
                             Name = "Books.Edit"
-                        },
-                        new
-                        {
-                            Id = new Guid("6713b9bd-7e6a-4780-84be-05f0092dc136"),
-                            Description = "Ability to GET users.",
-                            Name = "Users.Search"
-                        },
-                        new
-                        {
-                            Id = new Guid("d9b94b59-468a-4a57-aab1-04c27150a6c5"),
-                            Description = "Ability to POST user.",
-                            Name = "Users.Add"
-                        },
-                        new
-                        {
-                            Id = new Guid("18a09a24-67f4-44fe-8993-17c9aa7bbd63"),
-                            Description = "Ability to DELTE user.",
-                            Name = "Users.Delete"
-                        },
-                        new
-                        {
-                            Id = new Guid("84d4cc27-b676-4a5c-83fa-8d5f83a9efab"),
-                            Description = "Ability to PUT user.",
-                            Name = "Users.Edit"
-                        },
-                        new
-                        {
-                            Id = new Guid("9e790d82-e3b4-477e-8bf6-a33b6f023c9e"),
-                            Description = "Ability to GET roles.",
-                            Name = "Roles.Search"
-                        },
-                        new
-                        {
-                            Id = new Guid("8c247bbd-a6f3-4b2a-b86b-262d9cd6b9ab"),
-                            Description = "Ability to POST role.",
-                            Name = "Roles.Add"
-                        },
-                        new
-                        {
-                            Id = new Guid("05e8d3d1-bef0-48b1-a5d9-da6d4a90d525"),
-                            Description = "Ability to DELTE role.",
-                            Name = "Roles.Delete"
-                        },
-                        new
-                        {
-                            Id = new Guid("805ae7b9-a834-4e1a-a2c0-88d8d4f3b1cc"),
-                            Description = "Ability to PUT role.",
-                            Name = "Roles.Edit"
                         });
                 });
 
@@ -424,26 +338,23 @@ namespace Library.Migrations
                         new
                         {
                             Id = new Guid("79293f5d-c7ce-4ea0-8a19-816571e14c4d"),
-                            ConcurrencyStamp = "c98ab27f-b2c4-4159-85ea-b1f63cc28660",
+                            ConcurrencyStamp = "313f5c1b-8571-499f-bd82-07db9fcec8c0",
                             Description = "Role for admin",
-                            Name = "Admin",
-                            NormalizedName = "ADMIN"
+                            Name = "Admin"
                         },
                         new
                         {
                             Id = new Guid("e371f336-8278-4468-a6c7-373b9f02db52"),
-                            ConcurrencyStamp = "51d8bdaf-a221-4a86-a40c-6054debaa5e0",
+                            ConcurrencyStamp = "a2356887-b56b-42dc-9742-13dd5eb59138",
                             Description = "Role for user",
-                            Name = "User",
-                            NormalizedName = "USER"
+                            Name = "User"
                         },
                         new
                         {
                             Id = new Guid("821764a3-1f57-4413-94aa-a178b26509eb"),
-                            ConcurrencyStamp = "908538f0-ac84-4d09-9734-fcdf497b8916",
+                            ConcurrencyStamp = "4aee2802-f0de-4847-964f-463c6e45ef84",
                             Description = "Role for guest",
-                            Name = "Guest",
-                            NormalizedName = "GUEST"
+                            Name = "Guest"
                         });
                 });
 
@@ -527,23 +438,6 @@ namespace Library.Migrations
                     b.HasIndex("RoleId");
 
                     b.ToTable("AspNetUserRoles");
-
-                    b.HasData(
-                        new
-                        {
-                            UserId = new Guid("d82d7385-c6b1-4090-8128-7695c4a83f50"),
-                            RoleId = new Guid("79293f5d-c7ce-4ea0-8a19-816571e14c4d")
-                        },
-                        new
-                        {
-                            UserId = new Guid("62118166-5017-4732-b744-c59e24dd7a43"),
-                            RoleId = new Guid("e371f336-8278-4468-a6c7-373b9f02db52")
-                        },
-                        new
-                        {
-                            UserId = new Guid("f3e8124a-e6eb-40dd-adfd-976df7f6b447"),
-                            RoleId = new Guid("821764a3-1f57-4413-94aa-a178b26509eb")
-                        });
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<System.Guid>", b =>

@@ -1,4 +1,5 @@
-﻿using Library.Infrastructure;
+﻿using Library.Data;
+using Library.Infrastructure;
 using Library.Models;
 using Library.Models.Authors;
 using Microsoft.AspNetCore.Mvc;
@@ -19,6 +20,7 @@ namespace Library.Controllers
         public AuthorsController(LibraryDbContext context) => _context = context;
 
         [HttpGet]
+        [CustomAuthorize(Constants.Permissions.Authors.Search)]
         public async Task<IActionResult> GetAuthors()
         {
             List<AuthorModel> authors = await _context.Authors.Include(x => x.Books).ToListAsync();
@@ -26,6 +28,7 @@ namespace Library.Controllers
         }
 
         [HttpGet("{id}")]
+        [CustomAuthorize(Constants.Permissions.Authors.Search)]
         public async Task<IActionResult> GetAuthor(Guid id)
         {
             AuthorModel author = await _context.Authors.Where(x => x.Id == id).Include(x => x.Books).FirstOrDefaultAsync();
@@ -34,6 +37,7 @@ namespace Library.Controllers
         }
 
         [HttpPost]
+        [CustomAuthorize(Constants.Permissions.Authors.Add)]
         public async Task<IActionResult> AddAuthor(AddAuthorModel model)
         {
             AuthorModel author = await _context.Authors.Where(x => x.FirstName == model.FirstName && x.LastName == model.LastName).FirstOrDefaultAsync();
@@ -54,6 +58,7 @@ namespace Library.Controllers
         }
 
         [HttpDelete("{id}")]
+        [CustomAuthorize(Constants.Permissions.Authors.Delete)]
         public async Task<IActionResult> DeleteAuthor(Guid id)
         {
             AuthorModel author = await _context.Authors.Where(x => x.Id == id).Include(x => x.Books).FirstOrDefaultAsync();

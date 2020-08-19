@@ -12,5 +12,8 @@ namespace Library.Models
         [Required]
         public string Name { get; set; }
         public string Description { get; set; }
+
+        public PermissionModel(Guid id, string name, string description = "") =>
+            (Id, Name, Description) = (id, name, description);
     }
 }

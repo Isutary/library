@@ -1,4 +1,6 @@
-﻿using Library.Models;
+﻿using Library.Data;
+using Library.Infrastructure;
+using Library.Models;
 using Library.Models.Roles;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -18,13 +20,15 @@ namespace Library.Controllers
         public RolesController(RoleManager<RoleModel> roleManager) => _roleManager = roleManager;
 
         [HttpGet]
-        public async Task<IActionResult> GetRoles() 
+        [CustomAuthorize(Constants.Permissions.Roles.Search)]
+        public async Task<IActionResult> GetRoles()
         {
             List<RoleModel> roles = await _roleManager.Roles.ToListAsync();
             return Ok(roles);
         }
 
         [HttpGet("{id}")]
+        [CustomAuthorize(Constants.Permissions.Roles.Search)]
         public async Task<IActionResult> GetRole(Guid id)
         {
             RoleModel role = await _roleManager.FindByIdAsync(id.ToString());
@@ -33,6 +37,7 @@ namespace Library.Controllers
         }
 
         [HttpPost]
+        [CustomAuthorize(Constants.Permissions.Roles.Add)]
         public async Task<IActionResult> AddRole(AddRoleModel model)
         {
             RoleModel role = await _roleManager.FindByNameAsync(model.Name);
@@ -46,6 +51,7 @@ namespace Library.Controllers
         }
 
         [HttpDelete("{id}")]
+        [CustomAuthorize(Constants.Permissions.Roles.Delete)]
         public async Task<IActionResult> DeleteRole(Guid id)
         {
             RoleModel role = await _roleManager.FindByIdAsync(id.ToString());

@@ -1,16 +1,8 @@
 ﻿using System;
-using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
-using System.Net;
-using System.Text;
-using IdentityModel.AspNetCore.OAuth2Introspection;
-using Library.Data;
-using Library.Models.Identity;
-using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
-using Microsoft.IdentityModel.Tokens;
 
 namespace Library.Infrastructure
 {
@@ -18,13 +10,18 @@ namespace Library.Infrastructure
     public class CustomAuthorize : AuthorizeAttribute, IAuthorizationFilter
     {
         private readonly string[] _permissions;
+        private readonly string _authenticationSchemes = "Bearer";
 
-        public CustomAuthorize(string authenticationSchemes = "Bearer", params string[] permissions) 
-            => (_permissions, this.AuthenticationSchemes) = (permissions, authenticationSchemes); 
+        public CustomAuthorize(params string[] permissions) 
+            => (_permissions, this.AuthenticationSchemes) = (permissions, _authenticationSchemes); 
 
-        public async void OnAuthorization(AuthorizationFilterContext context)
+        public void OnAuthorization(AuthorizationFilterContext context)
         {
+            var clientClaim = context.HttpContext.User.Claims.FirstOrDefault(x => x.Type == "prm");
 
+            if (clientClaim != null && _permissions.Any(x => clientClaim.Value.Contains(x))) return;
+
+            context.Result = new UnauthorizedResult();
         }
     }
 }
