@@ -3,7 +3,7 @@ using System;
 
 namespace Library.Models.Identity
 {
-    public class UserModel : IdentityUser
+    public class UserModel : IdentityUser<Guid>
     {
     }
 }

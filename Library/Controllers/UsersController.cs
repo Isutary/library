@@ -1,11 +1,12 @@
-﻿using Library.Models;
+﻿using Library.Data;
+using Library.Infrastructure;
+using Library.Models;
 using Library.Models.Identity;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace Library.Controllers
@@ -19,6 +20,7 @@ namespace Library.Controllers
         public UsersController(UserManager<UserModel> userManager) => _userManager = userManager;
 
         [HttpGet]
+        [CustomAuthorize(Constants.Permissions.Users.Search)]
         public async Task<IActionResult> GetUsers()
         {
             List<UserModel> users = await _userManager.Users.ToListAsync();
@@ -26,39 +28,40 @@ namespace Library.Controllers
         }
 
         [HttpGet("{id}")]
+        [CustomAuthorize(Constants.Permissions.Users.Search)]
         public async Task<IActionResult> GetUser(Guid id)
         {
             UserModel user = await _userManager.FindByIdAsync(id.ToString());
-            if (user == null) return NotFound(new ErrorModel { Message = $"User with id: {id} does not exist." });
+            if (user == null) return NotFound(new ErrorModel($"User with id: {id} does not exist."));
             return Ok(user);
         }
 
         [HttpPost]
-        public async Task<IActionResult> AddUser([FromForm] AddUserModel model)
+        [CustomAuthorize(Constants.Permissions.Users.Add)]
+        public async Task<IActionResult> AddUser(AddUserModel model)
         {
-            if (ModelState.IsValid)
+            UserModel user = new UserModel
             {
-                UserModel user = new UserModel
-                {
-                    UserName = model.Name,
-                    Email = model.Email
-                };
-                
-                IdentityResult result = await _userManager.CreateAsync(user, model.Password);
+                UserName = model.Name,
+                Email = model.Email
+            };
 
-                if (result.Succeeded) return Created("", user);
-                else
+            IdentityResult result = await _userManager.CreateAsync(user, model.Password);
+
+            if (result.Succeeded) return Created("", user);
+            else
+            {
+                foreach (IdentityError error in result.Errors)
                 {
-                    foreach (IdentityError error in result.Errors)
-                    {
-                        ModelState.AddModelError("errors", error.Description);
-                    }
+                    ModelState.AddModelError("errors", error.Description);
                 }
+
+                return BadRequest(ModelState);
             }
-            return BadRequest(ModelState);
         }
 
         [HttpDelete("{id}")]
+        [CustomAuthorize(Constants.Permissions.Users.Delete)]
         public async Task<IActionResult> DeleteUser(Guid id)
         {
             UserModel user = await _userManager.FindByIdAsync(id.ToString());
@@ -78,7 +81,7 @@ namespace Library.Controllers
                 }
                 return BadRequest(ModelState);
             }
-            return NotFound(new ErrorModel { Message = $"User with id: {id} does not exist." });
+            return NotFound(new ErrorModel($"User with id: {id} does not exist."));
         }
     }
 }
