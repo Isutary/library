@@ -3,6 +3,7 @@ using Library.Data;
 using Library.Infrastructure;
 using Library.Models;
 using Library.Models.Identity;
+using Library.Models.Roles;
 using Library.Models.Users;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -18,8 +19,10 @@ namespace Library.Controllers
     public class UsersController : BaseController
     {
         private readonly UserManager<UserModel> _userManager;
+        private readonly RoleManager<RoleModel> _roleManager;
 
-        public UsersController(UserManager<UserModel> userManager, IMapper mapper) : base(mapper) => _userManager = userManager;
+        public UsersController(UserManager<UserModel> userManager, RoleManager<RoleModel> roleManager, IMapper mapper) : base(mapper)
+            => (_userManager, _roleManager) = (userManager, roleManager);
 
         [HttpGet]
         [CustomAuthorize(Constants.Permissions.Users.Search)]
@@ -71,6 +74,45 @@ namespace Library.Controllers
 
             user = _mapper.Map(model, user);
             IdentityResult result = await _userManager.UpdateAsync(user);
+            if (result.Succeeded) return Ok(user);
+            else return BadRequest(GetErrors(result.Errors));
+        }
+
+        [HttpGet("{id}/roles")]
+        public async Task<IActionResult> GetRoles(Guid id)
+        {
+            UserModel user = await _userManager.FindByIdAsync(id.ToString());
+            if (user == null) return NotFound(new ErrorModel($"User with id: {id} does not exist."));
+
+            var a = await _userManager.GetRolesAsync(user);
+
+            return Ok(new { Roles = a });
+        }
+
+        [HttpPost("{id}/roles")]
+        public async Task<IActionResult> AddRole(Guid id, RoleWrapper model)
+        {
+            UserModel user = await _userManager.FindByIdAsync(id.ToString());
+            if (user == null) return NotFound(new ErrorModel($"User with id: {id} does not exist."));
+
+            RoleModel role = await _roleManager.FindByIdAsync(model.Id.ToString());
+            if (role == null) return NotFound(new ErrorModel($"Role with id: {model.Id} does not exist."));
+
+            IdentityResult result = await _userManager.AddToRoleAsync(user, role.Name);
+            if (result.Succeeded) return Ok(user);
+            else return BadRequest(GetErrors(result.Errors));
+        }
+
+        [HttpDelete("{id}/roles")]
+        public async Task<IActionResult> RemoveRole(Guid id, RoleWrapper model)
+        {
+            UserModel user = await _userManager.FindByIdAsync(id.ToString());
+            if (user == null) return NotFound(new ErrorModel($"User with id: {id} does not exist."));
+
+            RoleModel role = await _roleManager.FindByIdAsync(model.Id.ToString());
+            if (role == null) return NotFound(new ErrorModel($"Role with id: {model.Id} does not exist."));
+
+            IdentityResult result = await _userManager.RemoveFromRoleAsync(user, role.Name);
             if (result.Succeeded) return Ok(user);
             else return BadRequest(GetErrors(result.Errors));
         }

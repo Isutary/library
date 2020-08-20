@@ -44,6 +44,7 @@ namespace Library.Controllers
                 .Include(x => x.Permission)
                 .Where(x => rolesNames.Contains(x.Role.Name))
                 .Select(x => x.Permission.Name)
+                .Distinct()
                 .ToListAsync();
 
             var handler = new JwtSecurityTokenHandler();

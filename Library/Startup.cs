@@ -48,7 +48,7 @@ namespace Library
                 configuration.RootPath = "ClientApp/build";
             });
         }
-
+        
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
             if (env.IsDevelopment())
