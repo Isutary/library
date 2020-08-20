@@ -8,9 +8,9 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
 using Library.Models.Roles;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.IdentityModel.Tokens;
-using System.Text;
+using System.Reflection;
+using AutoMapper;
+using Library.Infrastructure.Context;
 
 namespace Library
 {
@@ -37,21 +37,11 @@ namespace Library
                 options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore
             );
 
-            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-                .AddJwtBearer(options => {
-                    options.TokenValidationParameters = new TokenValidationParameters { 
-                        ValidateIssuer = true,
-                        ValidateAudience = true,
-                        ValidateLifetime = true,
-                        ValidateIssuerSigningKey = true,
-                        ValidIssuer = Configuration.GetValue<string>("Jwt:Issuer"),
-                        ValidAudience = Configuration.GetValue<string>("Jwt:Issuer"),
-                        IssuerSigningKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(Configuration.GetValue<string>("Jwt:Key")))
-                    };
-                });
+            services.AddJwtBearerWithSettings(Configuration);
 
             services.AddControllersWithViews();
             services.AddSwaggerGen();
+            services.AddAutoMapper(Assembly.GetExecutingAssembly());
 
             services.AddSpaStaticFiles(configuration =>
             {

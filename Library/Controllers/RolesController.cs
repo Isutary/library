@@ -1,4 +1,5 @@
-﻿using Library.Data;
+﻿using AutoMapper;
+using Library.Data;
 using Library.Infrastructure;
 using Library.Models;
 using Library.Models.Roles;
@@ -13,17 +14,18 @@ namespace Library.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
-    public class RolesController : Controller
+    public class RolesController : BaseController
     {
         private readonly RoleManager<RoleModel> _roleManager;
 
-        public RolesController(RoleManager<RoleModel> roleManager) => _roleManager = roleManager;
+        public RolesController(RoleManager<RoleModel> roleManager, IMapper mapper) : base(mapper) => _roleManager = roleManager;
 
         [HttpGet]
         [CustomAuthorize(Constants.Permissions.Roles.Search)]
         public async Task<IActionResult> GetRoles()
         {
             List<RoleModel> roles = await _roleManager.Roles.ToListAsync();
+
             return Ok(roles);
         }
 
@@ -33,6 +35,7 @@ namespace Library.Controllers
         {
             RoleModel role = await _roleManager.FindByIdAsync(id.ToString());
             if (role == null) return NotFound(new ErrorModel($"Role with id: {id} does not exist."));
+
             return Ok(role);
         }
 
@@ -40,14 +43,10 @@ namespace Library.Controllers
         [CustomAuthorize(Constants.Permissions.Roles.Add)]
         public async Task<IActionResult> AddRole(AddRoleModel model)
         {
-            RoleModel role = await _roleManager.FindByNameAsync(model.Name);
-            if (role == null)
-            {
-                role = new RoleModel(model.Name, model.Description);
-                await _roleManager.CreateAsync(role);
-                return Ok(role);
-            }
-            return BadRequest(new ErrorModel($"Role {role.Name} already exists."));
+            RoleModel role = _mapper.Map<RoleModel>(model);
+            IdentityResult result = await _roleManager.CreateAsync(role);
+            if (result.Succeeded) return Created("", role);
+            else return BadRequest(GetErrors(result.Errors));
         }
 
         [HttpDelete("{id}")]
@@ -56,8 +55,10 @@ namespace Library.Controllers
         {
             RoleModel role = await _roleManager.FindByIdAsync(id.ToString());
             if (role == null) return NotFound(new ErrorModel($"Role with id: {id} does not exist."));
-            await _roleManager.DeleteAsync(role);
-            return Ok(role);
+
+            IdentityResult result = await _roleManager.DeleteAsync(role);
+            if (result.Succeeded) return Ok(role);
+            else return BadRequest(GetErrors(result.Errors));
         }
 
         [HttpPut("{id}")]
@@ -65,14 +66,12 @@ namespace Library.Controllers
         public async Task<IActionResult> EditRole(Guid id, AddRoleModel model)
         {
             RoleModel role = await _roleManager.FindByIdAsync(id.ToString());
-            if (role != null)
-            {
-                role.Name = model.Name;
-                role.Description = model.Description;
-                await _roleManager.UpdateAsync(role);
-                return Ok(role);
-            }
-            return NotFound(new ErrorModel($"Role with id: {id} does not exist."));
+            if (role == null) return NotFound(new ErrorModel($"Role with id: {id} does not exist."));
+
+            role = _mapper.Map(model, role);
+            IdentityResult result = await _roleManager.UpdateAsync(role);
+            if (result.Succeeded) return Ok(role);
+            else return BadRequest(GetErrors(result.Errors));
         }
     }
 }

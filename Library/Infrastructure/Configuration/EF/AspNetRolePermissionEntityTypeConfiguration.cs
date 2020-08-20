@@ -8,7 +8,7 @@ using System.Linq;
 using Authors = Library.Data.Constants.Permissions.Authors;
 using Books = Library.Data.Constants.Permissions.Books;
 
-namespace Library.Infrastructure.Configuration
+namespace Library.Infrastructure.Configuration.EF
 {
     public class AspNetRolePermissionEntityTypeConfiguration : IEntityTypeConfiguration<AspNetRolePermission>
     {

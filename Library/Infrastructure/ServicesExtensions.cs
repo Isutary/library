@@ -1,6 +1,11 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
 
 namespace Library.Infrastructure
 {
@@ -22,6 +27,23 @@ namespace Library.Infrastructure
                 })
                 .AddEntityFrameworkStores<TContext>()
                 .AddDefaultTokenProviders();
+        }
+
+        public static AuthenticationBuilder AddJwtBearerWithSettings(this IServiceCollection services, IConfiguration configuration)
+        {
+            return services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+                .AddJwtBearer(options => {
+                    options.TokenValidationParameters = new TokenValidationParameters
+                    {
+                        ValidateIssuer = true,
+                        ValidateAudience = true,
+                        ValidateLifetime = true,
+                        ValidateIssuerSigningKey = true,
+                        ValidIssuer = configuration.GetValue<string>("Jwt:Issuer"),
+                        ValidAudience = configuration.GetValue<string>("Jwt:Issuer"),
+                        IssuerSigningKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(configuration.GetValue<string>("Jwt:Key")))
+                    };
+                });
         }
     }
 }

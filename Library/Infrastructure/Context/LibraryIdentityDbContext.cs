@@ -1,5 +1,5 @@
 ﻿using Library.Data;
-using Library.Infrastructure.Configuration;
+using Library.Infrastructure.Configuration.EF;
 using Library.Models;
 using Library.Models.Identity;
 using Library.Models.Roles;
@@ -8,7 +8,7 @@ using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using System;
 
-namespace Library.Infrastructure
+namespace Library.Infrastructure.Context
 {
     public class LibraryIdentityDbContext : IdentityDbContext<UserModel, RoleModel, Guid>
     {
