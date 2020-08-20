@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Library.Data;
 using Library.Infrastructure;
+using Library.Infrastructure.Context;
 using Library.Models;
 using Library.Models.Roles;
 using Microsoft.AspNetCore.Identity;
@@ -17,8 +18,10 @@ namespace Library.Controllers
     public class RolesController : BaseController
     {
         private readonly RoleManager<RoleModel> _roleManager;
+        private readonly LibraryIdentityDbContext _identity;
 
-        public RolesController(RoleManager<RoleModel> roleManager, IMapper mapper) : base(mapper) => _roleManager = roleManager;
+        public RolesController(RoleManager<RoleModel> roleManager, LibraryIdentityDbContext identity, IMapper mapper) : base(mapper) 
+            => (_roleManager, _identity) = (roleManager, identity);
 
         [HttpGet]
         [CustomAuthorize(Constants.Permissions.Roles.Search)]

@@ -79,6 +79,7 @@ namespace Library.Controllers
         }
 
         [HttpGet("{id}/roles")]
+        [CustomAuthorize(Constants.Permissions.Users.Edit)]
         public async Task<IActionResult> GetRoles(Guid id)
         {
             UserModel user = await _userManager.FindByIdAsync(id.ToString());
@@ -90,6 +91,7 @@ namespace Library.Controllers
         }
 
         [HttpPost("{id}/roles")]
+        [CustomAuthorize(Constants.Permissions.Users.Edit)]
         public async Task<IActionResult> AddRole(Guid id, RoleWrapper model)
         {
             UserModel user = await _userManager.FindByIdAsync(id.ToString());
@@ -104,6 +106,7 @@ namespace Library.Controllers
         }
 
         [HttpDelete("{id}/roles")]
+        [CustomAuthorize(Constants.Permissions.Users.Edit)]
         public async Task<IActionResult> RemoveRole(Guid id, RoleWrapper model)
         {
             UserModel user = await _userManager.FindByIdAsync(id.ToString());
