@@ -25,6 +25,7 @@ namespace Library.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
+    [AllowAnonymous]
     public class AccountController : BaseController
     {
         private readonly UserManager<UserModel> _userManager;
@@ -42,7 +43,6 @@ namespace Library.Controllers
             => (_userManager, _configuration, _identity, _emailService) = (userManager, configuration, identity, emailService);
 
         [HttpPost("login")]
-        [AllowAnonymous]
         public async Task<IActionResult> Login(LoginModel model)
         {
             UserModel user = await _userManager.FindByEmailAsync(model.Email);
@@ -98,30 +98,40 @@ namespace Library.Controllers
         public async Task<IActionResult> VerifyToken(string userId, string token)
         {
             UserModel user = await _userManager.FindByIdAsync(userId);
+
             IdentityResult result = await _userManager.ConfirmEmailAsync(user, token);
             if (result.Succeeded) return Accepted(user);
             else return BadRequest(GetErrors(result.Errors));
         }
 
         [HttpPost("recovery")]
-        [AllowAnonymous]
         public async Task<IActionResult> ResetPassword(EmailWrapper model)
         {
             UserModel user = await _userManager.FindByEmailAsync(model.Email);
             if (user == null) return NotFound(new ErrorModel($"User with email: {model.Email} does not exist."));
 
-            var userId = await _userManager.GetUserIdAsync(user);
-            var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
-            code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
+            var code = await _userManager.GeneratePasswordResetTokenAsync(user);
             var EmailConfirmationUrl = Url.Page(
-                "/Account",
+                "",
                 pageHandler: null,
-                values: new { code = code },
+                values: new { userId = user.Id, token = code },
                 protocol: Request.Scheme);
 
-            var a = _userManager.GeneratePasswordResetTokenAsync(user);
+            EmailMessage emailMessage = new EmailMessage(user.Email, "Confirm email", $"<a href='{EmailConfirmationUrl}'> Click here </a>");
 
-            return Ok(EmailConfirmationUrl);
+            await _emailService.SendEmailAsync(emailMessage);
+
+            return Ok(user);
+        }
+
+        [HttpGet("recovery")]
+        public async Task<IActionResult> VerifyPasswordReset(string userId, string token)
+        {
+            UserModel user = await _userManager.FindByIdAsync(userId);
+
+            IdentityResult result = await _userManager.ResetPasswordAsync(user, token, "bibili");
+            if (result.Succeeded) return Accepted(user);
+            else return BadRequest(GetErrors(result.Errors));
         }
 
         private string StringFromList(List<string> list)
