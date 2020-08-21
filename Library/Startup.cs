@@ -43,6 +43,8 @@ namespace Library
             services.AddSwaggerGen();
             services.AddAutoMapper(Assembly.GetExecutingAssembly());
 
+            services.AddEmailService(Configuration);
+
             services.AddSpaStaticFiles(configuration =>
             {
                 configuration.RootPath = "ClientApp/build";

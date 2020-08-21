@@ -1,7 +1,9 @@
 ﻿using Library.Infrastructure;
 using Library.Infrastructure.Context;
+using Library.Infrastructure.Mail;
 using Library.Models;
 using Library.Models.Identity;
+using Library.Models.Mail;
 using Library.Models.Users;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
@@ -26,9 +28,15 @@ namespace Library.Controllers
         private readonly UserManager<UserModel> _userManager;
         private readonly IConfiguration _configuration;
         private readonly LibraryIdentityDbContext _identity;
+        private readonly IEmailService _emailService;
 
-        public AccountController(UserManager<UserModel> userManager, IConfiguration configuration, LibraryIdentityDbContext identity)
-            => (_userManager, _configuration, _identity) = (userManager, configuration, identity);
+        public AccountController(
+            UserManager<UserModel> userManager,
+            IConfiguration configuration,
+            LibraryIdentityDbContext identity,
+            IEmailService emailService
+            )
+            => (_userManager, _configuration, _identity, _emailService) = (userManager, configuration, identity, emailService);
 
         [HttpPost("login")]
         [AllowAnonymous]
@@ -37,7 +45,7 @@ namespace Library.Controllers
             UserModel user = await _userManager.FindByEmailAsync(model.Email);
             if (user == null) return NotFound(new ErrorModel($"User with email: {model.Email} does not exist"));
             if (!await _userManager.CheckPasswordAsync(user, model.Password)) return Unauthorized(new ErrorModel("Incorrect password."));
-            
+
             var rolesNames = await _userManager.GetRolesAsync(user);
             var permissions = await _identity.AspNetRolePermissions
                 .Include(x => x.Role)
@@ -58,6 +66,16 @@ namespace Library.Controllers
                 );
 
             return Ok(new TokenModel(handler.WriteToken(token)));
+        }
+
+        [HttpPost("recovery")]
+        [AllowAnonymous]
+        public async Task<IActionResult> ResetPassword(EmailWrapper model)
+        {
+            EmailMessage emailMessage = new EmailMessage(model.Email, "title", "how you doiiiin?");
+            await _emailService.SendEmailAsync(emailMessage);
+
+            return Ok();
         }
 
         private string StringFromList(List<string> list)
