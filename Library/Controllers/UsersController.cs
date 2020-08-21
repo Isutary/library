@@ -85,14 +85,14 @@ namespace Library.Controllers
             UserModel user = await _userManager.FindByIdAsync(id.ToString());
             if (user == null) return NotFound(new ErrorModel($"User with id: {id} does not exist."));
 
-            var a = await _userManager.GetRolesAsync(user);
+            var roles = await _userManager.GetRolesAsync(user);
 
-            return Ok(new { Roles = a });
+            return Ok(new { Roles = roles });
         }
 
         [HttpPost("{id}/roles")]
         [CustomAuthorize(Constants.Permissions.Users.Edit)]
-        public async Task<IActionResult> AddRole(Guid id, RoleWrapper model)
+        public async Task<IActionResult> AddRole(Guid id, IdWrapper model)
         {
             UserModel user = await _userManager.FindByIdAsync(id.ToString());
             if (user == null) return NotFound(new ErrorModel($"User with id: {id} does not exist."));
@@ -101,13 +101,13 @@ namespace Library.Controllers
             if (role == null) return NotFound(new ErrorModel($"Role with id: {model.Id} does not exist."));
 
             IdentityResult result = await _userManager.AddToRoleAsync(user, role.Name);
-            if (result.Succeeded) return Ok(user);
+            if (result.Succeeded) return Ok(new { email = user.Email, userId = id, role = role.Name, roleId = model.Id });
             else return BadRequest(GetErrors(result.Errors));
         }
 
         [HttpDelete("{id}/roles")]
         [CustomAuthorize(Constants.Permissions.Users.Edit)]
-        public async Task<IActionResult> RemoveRole(Guid id, RoleWrapper model)
+        public async Task<IActionResult> RemoveRole(Guid id, IdWrapper model)
         {
             UserModel user = await _userManager.FindByIdAsync(id.ToString());
             if (user == null) return NotFound(new ErrorModel($"User with id: {id} does not exist."));
@@ -116,7 +116,7 @@ namespace Library.Controllers
             if (role == null) return NotFound(new ErrorModel($"Role with id: {model.Id} does not exist."));
 
             IdentityResult result = await _userManager.RemoveFromRoleAsync(user, role.Name);
-            if (result.Succeeded) return Ok(user);
+            if (result.Succeeded) return Ok(new { email = user.Email, userId = id, role = role.Name, roleId = model.Id });
             else return BadRequest(GetErrors(result.Errors));
         }
     }

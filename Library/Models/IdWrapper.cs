@@ -1,9 +1,9 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
 
-namespace Library.Models.Roles
+namespace Library.Models
 {
-    public class RoleWrapper
+    public class IdWrapper
     {
         [Required]
         public Guid Id { get; set; }

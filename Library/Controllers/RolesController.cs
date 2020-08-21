@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace Library.Controllers
@@ -20,7 +21,7 @@ namespace Library.Controllers
         private readonly RoleManager<RoleModel> _roleManager;
         private readonly LibraryIdentityDbContext _identity;
 
-        public RolesController(RoleManager<RoleModel> roleManager, LibraryIdentityDbContext identity, IMapper mapper) : base(mapper) 
+        public RolesController(RoleManager<RoleModel> roleManager, LibraryIdentityDbContext identity, IMapper mapper) : base(mapper)
             => (_roleManager, _identity) = (roleManager, identity);
 
         [HttpGet]
@@ -75,6 +76,61 @@ namespace Library.Controllers
             IdentityResult result = await _roleManager.UpdateAsync(role);
             if (result.Succeeded) return Ok(role);
             else return BadRequest(GetErrors(result.Errors));
+        }
+
+        [HttpGet("{id}/permissions")]
+        [CustomAuthorize(Constants.Permissions.Roles.Edit)]
+        public async Task<IActionResult> GetPermissions(Guid id)
+        {
+            RoleModel role = await _roleManager.FindByIdAsync(id.ToString());
+            if (role == null) return NotFound(new ErrorModel($"Role with id: {id} does not exist."));
+
+            List<PermissionModel> permissions = await _identity.AspNetRolePermissions
+                .Where(x => x.RoleId == id)
+                .Select(x => x.Permission)
+                .ToListAsync();
+
+            return Ok(new { Permissions = permissions });
+        }
+
+        [HttpPost("{id}/permissions")]
+        [CustomAuthorize(Constants.Permissions.Roles.Edit)]
+        public async Task<IActionResult> AddPermission(Guid id, IdWrapper model)
+        {
+            RoleModel role = await _roleManager.FindByIdAsync(id.ToString());
+            if (role == null) return NotFound(new ErrorModel($"Role with id: {id} does not exist."));
+
+            PermissionModel permission = await _identity.Permissions.FindAsync(model.Id);
+            if (permission == null) return NotFound(new ErrorModel($"Permission with id: {model.Id} does not exist."));
+
+            AspNetRolePermission rolePermission = await _identity.AspNetRolePermissions.FindAsync(id, model.Id);
+            if (rolePermission != null) return BadRequest(new ErrorModel($"Role with id: {id} already has permission with id: {model.Id}."));
+            
+            await _identity.AspNetRolePermissions.AddAsync(new AspNetRolePermission { RoleId = id, PermissionId = model.Id});
+            await _identity.SaveChangesAsync();
+
+            rolePermission = await _identity.AspNetRolePermissions.FindAsync(id, model.Id);
+            return Ok(rolePermission);
+        }
+
+        [HttpDelete("{id}/permissions")]
+        [CustomAuthorize(Constants.Permissions.Roles.Edit)]
+        public async Task<IActionResult> RemovePermission(Guid id, IdWrapper model)
+        {
+            RoleModel role = await _roleManager.FindByIdAsync(id.ToString());
+            if (role == null) return NotFound(new ErrorModel($"Role with id: {id} does not exist."));
+
+            PermissionModel permission = await _identity.Permissions.FindAsync(model.Id);
+            if (permission == null) return NotFound(new ErrorModel($"Permission with id: {model.Id} does not exist."));
+
+            AspNetRolePermission rolePermission = await _identity.AspNetRolePermissions.FindAsync(id, model.Id);
+            if (rolePermission == null) return BadRequest(new ErrorModel($"Role with id: {id} does not have permission with id: {model.Id}."));
+
+            rolePermission = await _identity.AspNetRolePermissions.FindAsync(id, model.Id);
+            _identity.AspNetRolePermissions.Remove(rolePermission);
+            await _identity.SaveChangesAsync();
+
+            return Ok(rolePermission);
         }
     }
 }
