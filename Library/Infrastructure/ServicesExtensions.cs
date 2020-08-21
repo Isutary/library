@@ -1,4 +1,5 @@
 ﻿using FluentEmail.Core;
+using FluentEmail.Core.Defaults;
 using FluentEmail.Smtp;
 using Library.Infrastructure.Mail;
 using Library.Models.Mail;
@@ -59,6 +60,7 @@ namespace Library.Infrastructure
             if (emailSettings == null) throw new Exception("Invalid EmailSettings.");
 
             //services.AddFluentEmail(emailSettings.Sender);
+            Email.DefaultRenderer = new ReplaceRenderer();
             Email.DefaultSender = new SmtpSender(new SmtpClient
             {
                 Host = emailSettings.MailServer,

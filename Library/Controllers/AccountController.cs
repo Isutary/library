@@ -1,4 +1,5 @@
-﻿using Library.Infrastructure;
+﻿using AutoMapper;
+using Library.Infrastructure;
 using Library.Infrastructure.Context;
 using Library.Infrastructure.Mail;
 using Library.Models;
@@ -8,6 +9,7 @@ using Library.Models.Users;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
@@ -23,7 +25,7 @@ namespace Library.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
-    public class AccountController : Controller
+    public class AccountController : BaseController
     {
         private readonly UserManager<UserModel> _userManager;
         private readonly IConfiguration _configuration;
@@ -34,8 +36,9 @@ namespace Library.Controllers
             UserManager<UserModel> userManager,
             IConfiguration configuration,
             LibraryIdentityDbContext identity,
-            IEmailService emailService
-            )
+            IEmailService emailService,
+            IMapper mapper
+            ) : base(mapper)
             => (_userManager, _configuration, _identity, _emailService) = (userManager, configuration, identity, emailService);
 
         [HttpPost("login")]
@@ -68,14 +71,57 @@ namespace Library.Controllers
             return Ok(new TokenModel(handler.WriteToken(token)));
         }
 
+        [HttpPost("register")]
+        public async Task<IActionResult> RegisterAccount(AddUserModel model)
+        {
+            UserModel user = _mapper.Map<UserModel>(model);
+            IdentityResult result = await _userManager.CreateAsync(user, model.Password);
+            if (result.Succeeded)
+            {
+                var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
+                var EmailConfirmationUrl = Url.Page(
+                    "",
+                    pageHandler: null,
+                    values: new { userId = user.Id, token = code },
+                    protocol: Request.Scheme);
+
+                EmailMessage emailMessage = new EmailMessage(user.Email, "Confirm email", $"<a href='{EmailConfirmationUrl}'> Click here </a>");
+
+                await _emailService.SendEmailAsync(emailMessage);
+
+                return Created("", user);
+            }
+            else return BadRequest(GetErrors(result.Errors));
+        }
+
+        [HttpGet("register")]
+        public async Task<IActionResult> VerifyToken(string userId, string token)
+        {
+            UserModel user = await _userManager.FindByIdAsync(userId);
+            IdentityResult result = await _userManager.ConfirmEmailAsync(user, token);
+            if (result.Succeeded) return Accepted(user);
+            else return BadRequest(GetErrors(result.Errors));
+        }
+
         [HttpPost("recovery")]
         [AllowAnonymous]
         public async Task<IActionResult> ResetPassword(EmailWrapper model)
         {
-            EmailMessage emailMessage = new EmailMessage(model.Email, "title", "how you doiiiin?");
-            await _emailService.SendEmailAsync(emailMessage);
+            UserModel user = await _userManager.FindByEmailAsync(model.Email);
+            if (user == null) return NotFound(new ErrorModel($"User with email: {model.Email} does not exist."));
 
-            return Ok();
+            var userId = await _userManager.GetUserIdAsync(user);
+            var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
+            code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
+            var EmailConfirmationUrl = Url.Page(
+                "/Account",
+                pageHandler: null,
+                values: new { code = code },
+                protocol: Request.Scheme);
+
+            var a = _userManager.GeneratePasswordResetTokenAsync(user);
+
+            return Ok(EmailConfirmationUrl);
         }
 
         private string StringFromList(List<string> list)
