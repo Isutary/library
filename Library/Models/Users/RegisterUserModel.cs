@@ -2,7 +2,7 @@
 
 namespace Library.Models.Identity
 {
-    public class AddUserModel
+    public class RegisterUserModel
     {
         [Required]
         public string Name { get; set; }
@@ -10,5 +10,7 @@ namespace Library.Models.Identity
         public string Email { get; set; }
         [Required]
         public string Password { get; set; }
+        [Required]
+        public string ConfirmPassword { get; set; }
     }
 }
