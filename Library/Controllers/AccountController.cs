@@ -9,7 +9,6 @@ using Library.Models.Users;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
@@ -63,7 +62,7 @@ namespace Library.Controllers
             var token = handler.CreateJwtSecurityToken(
                 issuer: _configuration.GetValue<string>("Jwt:Issuer"),
                 audience: _configuration.GetValue<string>("Jwt:Issuer"),
-                subject: new ClaimsIdentity(new Claim[] { new Claim("prm", StringFromList(permissions)) }),
+                subject: new ClaimsIdentity(new Claim[] { new Claim("prm", permissions.ToString<string>()) }),
                 expires: DateTime.Now.AddDays(30),
                 signingCredentials: new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
                 );
@@ -72,15 +71,17 @@ namespace Library.Controllers
         }
 
         [HttpPost("register")]
-        public async Task<IActionResult> RegisterAccount(AddUserModel model)
+        public async Task<IActionResult> RegisterAccount(RegisterUserModel model)
         {
             UserModel user = _mapper.Map<UserModel>(model);
+            if (!model.ConfirmPassword.Equals(model.Password)) return BadRequest(new ErrorModel("Passwords must match."));
+
             IdentityResult result = await _userManager.CreateAsync(user, model.Password);
             if (result.Succeeded)
             {
                 var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
                 var EmailConfirmationUrl = Url.Page(
-                    "",
+                    pageName: null,
                     pageHandler: null,
                     values: new { userId = user.Id, token = code },
                     protocol: Request.Scheme);
@@ -95,56 +96,52 @@ namespace Library.Controllers
         }
 
         [HttpGet("register")]
-        public async Task<IActionResult> VerifyToken(string userId, string token)
+        public async Task<IActionResult> VerifyToken(Guid userId, string token)
         {
-            UserModel user = await _userManager.FindByIdAsync(userId);
+            UserModel user = await _userManager.FindByIdAsync(userId.ToString());
+            if (user == null) return NotFound(new ErrorModel($"User with id: {userId} does not exist."));
 
             IdentityResult result = await _userManager.ConfirmEmailAsync(user, token);
             if (result.Succeeded) return Accepted(user);
             else return BadRequest(GetErrors(result.Errors));
         }
 
-        [HttpPost("recovery")]
-        public async Task<IActionResult> ResetPassword(EmailWrapper model)
+        [HttpPut("password-request")]
+        public async Task<IActionResult> ChangePasswordRequest(EmailWrapper model)
         {
             UserModel user = await _userManager.FindByEmailAsync(model.Email);
             if (user == null) return NotFound(new ErrorModel($"User with email: {model.Email} does not exist."));
 
             var code = await _userManager.GeneratePasswordResetTokenAsync(user);
-            var EmailConfirmationUrl = Url.Page(
-                "",
+            var PasswordResetUrl = Url.Page(
+                pageName: null,
                 pageHandler: null,
                 values: new { userId = user.Id, token = code },
                 protocol: Request.Scheme);
 
-            EmailMessage emailMessage = new EmailMessage(user.Email, "Confirm email", $"<a href='{EmailConfirmationUrl}'> Click here </a>");
+            EmailMessage emailMessage = new EmailMessage(user.Email, "Password reset", $"<a href='{PasswordResetUrl}'> Click here </a>");
 
             await _emailService.SendEmailAsync(emailMessage);
 
             return Ok(user);
         }
 
-        [HttpGet("recovery")]
-        public async Task<IActionResult> VerifyPasswordReset(string userId, string token)
+        [HttpGet("password-request")]
+        public async Task<IActionResult> ExtractToken(Guid userId, string token)
         {
-            UserModel user = await _userManager.FindByIdAsync(userId);
-
-            IdentityResult result = await _userManager.ResetPasswordAsync(user, token, "bibili");
-            if (result.Succeeded) return Accepted(user);
-            else return BadRequest(GetErrors(result.Errors));
+            return Ok(new { UserId = userId, Token = token });
         }
 
-        private string StringFromList(List<string> list)
+        [HttpPut("password-change")]
+        public async Task<IActionResult> ChangePassword(PasswordResetModel model)
         {
-            string str = "";
+            UserModel user = await _userManager.FindByIdAsync(model.UserId);
+            if (user == null) return NotFound(new ErrorModel($"User with id: {model.UserId} does not exist."));
+            if (!model.ConfirmPassword.Equals(model.NewPassword)) return BadRequest(new ErrorModel("Passwords must match."));
 
-            for (int i = 0; i < list.Count; i++)
-            {
-                if (i != list.Count - 1) str += list[i] + ",";
-                else str += list[i];
-            }
-
-            return str;
+            IdentityResult result = await _userManager.ResetPasswordAsync(user, model.Token, model.NewPassword);
+            if (result.Succeeded) return Accepted(user);
+            else return BadRequest(GetErrors(result.Errors));
         }
     }
 }

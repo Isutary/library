@@ -2,6 +2,7 @@
 using FluentEmail.Core.Defaults;
 using FluentEmail.Smtp;
 using Library.Infrastructure.Mail;
+using Library.Models.Identity;
 using Library.Models.Mail;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -31,9 +32,12 @@ namespace Library.Infrastructure
                     options.Password.RequireNonAlphanumeric = false;
                     options.Password.RequireUppercase = false;
                     options.Password.RequireLowercase = false;
+                    options.Tokens.PasswordResetTokenProvider = nameof(JwtTokenProvider<UserModel>);
+                    options.Tokens.EmailConfirmationTokenProvider = nameof(JwtTokenProvider<UserModel>);
                 })
                 .AddEntityFrameworkStores<TContext>()
-                .AddDefaultTokenProviders();
+                .AddDefaultTokenProviders()
+                .AddTokenProvider<JwtTokenProvider<UserModel>>(nameof(JwtTokenProvider<UserModel>));
         }
 
         public static AuthenticationBuilder AddJwtBearerWithSettings(this IServiceCollection services, IConfiguration configuration)
@@ -59,7 +63,6 @@ namespace Library.Infrastructure
             EmailSettings emailSettings = configuration.GetSection("EmailSettings").Get<EmailSettings>();
             if (emailSettings == null) throw new Exception("Invalid EmailSettings.");
 
-            //services.AddFluentEmail(emailSettings.Sender);
             Email.DefaultRenderer = new ReplaceRenderer();
             Email.DefaultSender = new SmtpSender(new SmtpClient
             {

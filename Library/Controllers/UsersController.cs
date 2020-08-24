@@ -43,16 +43,6 @@ namespace Library.Controllers
             return Ok(user);
         }
 
-        [HttpPost]
-        [CustomAuthorize(Constants.Permissions.Users.Add)]
-        public async Task<IActionResult> AddUser(AddUserModel model)
-        {
-            UserModel user = _mapper.Map<UserModel>(model);
-            IdentityResult result = await _userManager.CreateAsync(user, model.Password);
-            if (result.Succeeded) return Created("", user);
-            else return BadRequest(GetErrors(result.Errors));
-        }
-
         [HttpDelete("{id}")]
         [CustomAuthorize(Constants.Permissions.Users.Delete)]
         public async Task<IActionResult> DeleteUser(Guid id)
