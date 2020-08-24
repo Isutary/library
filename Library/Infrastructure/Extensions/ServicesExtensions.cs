@@ -1,13 +1,21 @@
-﻿using Microsoft.AspNetCore.Authentication;
+﻿using FluentEmail.Core;
+using FluentEmail.Core.Defaults;
+using FluentEmail.Smtp;
+using Library.Infrastructure.Mail;
+using Library.Models.Identity;
+using Library.Models.Mail;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
+using System;
+using System.Net.Mail;
 using System.Text;
 
-namespace Library.Infrastructure
+namespace Library.Infrastructure.Extensions
 {
     public static class ServicesExtensions
     {
@@ -24,15 +32,19 @@ namespace Library.Infrastructure
                     options.Password.RequireNonAlphanumeric = false;
                     options.Password.RequireUppercase = false;
                     options.Password.RequireLowercase = false;
+                    options.Tokens.PasswordResetTokenProvider = nameof(JwtTokenProvider<UserModel>);
+                    options.Tokens.EmailConfirmationTokenProvider = nameof(JwtTokenProvider<UserModel>);
                 })
                 .AddEntityFrameworkStores<TContext>()
-                .AddDefaultTokenProviders();
+                .AddDefaultTokenProviders()
+                .AddTokenProvider<JwtTokenProvider<UserModel>>(nameof(JwtTokenProvider<UserModel>));
         }
 
         public static AuthenticationBuilder AddJwtBearerWithSettings(this IServiceCollection services, IConfiguration configuration)
         {
             return services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-                .AddJwtBearer(options => {
+                .AddJwtBearer(options =>
+                {
                     options.TokenValidationParameters = new TokenValidationParameters
                     {
                         ValidateIssuer = true,
@@ -44,6 +56,23 @@ namespace Library.Infrastructure
                         IssuerSigningKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(configuration.GetValue<string>("Jwt:Key")))
                     };
                 });
+        }
+
+        public static IServiceCollection AddEmailService(this IServiceCollection services, IConfiguration configuration)
+        {
+            EmailSettings emailSettings = configuration.GetSection("EmailSettings").Get<EmailSettings>();
+            if (emailSettings == null) throw new Exception("Invalid EmailSettings.");
+
+            Email.DefaultRenderer = new ReplaceRenderer();
+            Email.DefaultSender = new SmtpSender(new SmtpClient
+            {
+                Host = emailSettings.MailServer,
+                Port = emailSettings.MailPort
+            });
+
+            services.AddScoped<IEmailService>(provider => new FluentEmailService(emailSettings));
+
+            return services;
         }
     }
 }

@@ -11,6 +11,7 @@ using Library.Models.Roles;
 using System.Reflection;
 using AutoMapper;
 using Library.Infrastructure.Context;
+using Library.Infrastructure.Extensions;
 
 namespace Library
 {
@@ -43,6 +44,8 @@ namespace Library
             services.AddSwaggerGen();
             services.AddAutoMapper(Assembly.GetExecutingAssembly());
 
+            services.AddEmailService(Configuration);
+
             services.AddSpaStaticFiles(configuration =>
             {
                 configuration.RootPath = "ClientApp/build";
@@ -66,6 +69,7 @@ namespace Library
             app.UseStaticFiles();
             app.UseSpaStaticFiles();
             app.UseRouting();
+
             app.UseAuthentication();
             app.UseAuthorization();
 
