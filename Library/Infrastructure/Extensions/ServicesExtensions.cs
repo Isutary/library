@@ -15,7 +15,7 @@ using System;
 using System.Net.Mail;
 using System.Text;
 
-namespace Library.Infrastructure
+namespace Library.Infrastructure.Extensions
 {
     public static class ServicesExtensions
     {

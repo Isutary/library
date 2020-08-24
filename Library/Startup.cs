@@ -11,6 +11,7 @@ using Library.Models.Roles;
 using System.Reflection;
 using AutoMapper;
 using Library.Infrastructure.Context;
+using Library.Infrastructure.Extensions;
 
 namespace Library
 {

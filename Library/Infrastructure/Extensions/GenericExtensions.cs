@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace Library.Infrastructure
+namespace Library.Infrastructure.Extensions
 {
-    public static class Extensions
+    public static class GenericExtensions
     {
         public static string ToString<T>(this List<T> list)
         {

@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Library.Infrastructure;
+using Library.Infrastructure.Extensions;
 using Library.Infrastructure.Context;
 using Library.Infrastructure.Mail;
 using Library.Models;
