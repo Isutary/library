@@ -1,0 +1,1057 @@
+{
+	"info": {
+		"_postman_id": "4c0413fa-8fe5-4f9e-871a-9647d8e5b01a",
+		"name": "Library",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Authors",
+			"item": [
+				{
+					"name": "Authors :: GetAuthorById",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{Authorization}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{Host}}/api/authors/8FF6C943-C1FC-4D71-9E7A-05D474FAD866",
+							"host": [
+								"{{Host}}"
+							],
+							"path": [
+								"api",
+								"authors",
+								"8FF6C943-C1FC-4D71-9E7A-05D474FAD866"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Authors :: GetAllAuthors",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{Authorization}}",
+								"type": "text"
+							},
+							{
+								"key": "",
+								"value": "",
+								"type": "text",
+								"disabled": true
+							}
+						],
+						"url": {
+							"raw": "{{Host}}/api/authors",
+							"host": [
+								"{{Host}}"
+							],
+							"path": [
+								"api",
+								"authors"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Authors :: AddAuthor",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{Authorization}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"firstName\": \"PostmanName\",\r\n  \"lastName\": \"PostmanLastName\",\r\n  \"born\": \"2020-08-19T11:44:02.797Z\",\r\n  \"died\": \"2020-08-19T11:44:02.797Z\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{Host}}/api/authors",
+							"host": [
+								"{{Host}}"
+							],
+							"path": [
+								"api",
+								"authors"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Authors :: EditAuthor",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"type": "text",
+								"value": "{{Authorization}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"firstName\": \"0000\",\r\n  \"lastName\": \"string\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{Host}}/api/authors/8077717A-ED86-4CC3-7910-08D84437DFA7",
+							"host": [
+								"{{Host}}"
+							],
+							"path": [
+								"api",
+								"authors",
+								"8077717A-ED86-4CC3-7910-08D84437DFA7"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Authors :: DeleteAuthor",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{Authorization}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{Host}}/api/authors/8B48A5E8-E0A1-474D-AFCF-33859DAFB42D",
+							"host": [
+								"{{Host}}"
+							],
+							"path": [
+								"api",
+								"authors",
+								"8B48A5E8-E0A1-474D-AFCF-33859DAFB42D"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "Books",
+			"item": [
+				{
+					"name": "Books :: GetBookById",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{Authorization}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{Host}}/api/books/E22024B0-5D64-441B-9CE6-33DF0D9F6AAE",
+							"host": [
+								"{{Host}}"
+							],
+							"path": [
+								"api",
+								"books",
+								"E22024B0-5D64-441B-9CE6-33DF0D9F6AAE"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Books :: GetAllBooks",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{Authorization}}",
+								"type": "text"
+							},
+							{
+								"key": "",
+								"value": "",
+								"type": "text",
+								"disabled": true
+							}
+						],
+						"url": {
+							"raw": "{{Host}}/api/books",
+							"host": [
+								"{{Host}}"
+							],
+							"path": [
+								"api",
+								"books"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Books :: AddBook",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{Authorization}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"name\": \"PostmanBook\",\r\n  \"authorId\": \"8FF6C943-C1FC-4D71-9E7A-05D474FAD866\",\r\n  \"published\": \"2020-08-19T11:47:33.590Z\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{Host}}/api/books",
+							"host": [
+								"{{Host}}"
+							],
+							"path": [
+								"api",
+								"books"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Books :: EditBook",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"type": "text",
+								"value": "{{Authorization}}"
+							}
+						],
+						"url": {
+							"raw": "{{Host}}/api/books/1E9ED09E-4B07-4A27-A2CD-64BE73A3E85B",
+							"host": [
+								"{{Host}}"
+							],
+							"path": [
+								"api",
+								"books",
+								"1E9ED09E-4B07-4A27-A2CD-64BE73A3E85B"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Books :: DeleteBook",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{Authorization}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{Host}}/api/books/1E9ED09E-4B07-4A27-A2CD-64BE73A3E85B",
+							"host": [
+								"{{Host}}"
+							],
+							"path": [
+								"api",
+								"books",
+								"1E9ED09E-4B07-4A27-A2CD-64BE73A3E85B"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "Roles",
+			"item": [
+				{
+					"name": "Roles :: GetRoleById",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{Authorization}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{Host}}/api/roles/79293F5D-C7CE-4EA0-8A19-816571E14C4D",
+							"host": [
+								"{{Host}}"
+							],
+							"path": [
+								"api",
+								"roles",
+								"79293F5D-C7CE-4EA0-8A19-816571E14C4D"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Roles :: GetAllRoles",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{Authorization}}",
+								"type": "text"
+							},
+							{
+								"key": "",
+								"value": "",
+								"type": "text",
+								"disabled": true
+							}
+						],
+						"url": {
+							"raw": "{{Host}}/api/roles",
+							"host": [
+								"{{Host}}"
+							],
+							"path": [
+								"api",
+								"roles"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Roles :: AddRole",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{Authorization}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"name\": \"PostmanRole\",\r\n  \"description\": \"PostmanDescription\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{Host}}/api/roles",
+							"host": [
+								"{{Host}}"
+							],
+							"path": [
+								"api",
+								"roles"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Roles :: EditRole",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"type": "text",
+								"value": "{{Authorization}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"name\": \"string\",\r\n  \"description\": \"string\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{Host}}/api/roles/821764A3-1F57-4413-94AA-A178B26509EB",
+							"host": [
+								"{{Host}}"
+							],
+							"path": [
+								"api",
+								"roles",
+								"821764A3-1F57-4413-94AA-A178B26509EB"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Roles :: DeleteRole",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{Authorization}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{Host}}/api/roles/821764A3-1F57-4413-94AA-A178B26509EB",
+							"host": [
+								"{{Host}}"
+							],
+							"path": [
+								"api",
+								"roles",
+								"821764A3-1F57-4413-94AA-A178B26509EB"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Users :: GetRolesPermissions",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{Authorization}}",
+								"type": "text"
+							},
+							{
+								"key": "",
+								"value": "",
+								"type": "text",
+								"disabled": true
+							}
+						],
+						"url": {
+							"raw": "{{Host}}/api/roles/E371F336-8278-4468-A6C7-373B9F02DB52/permissions",
+							"host": [
+								"{{Host}}"
+							],
+							"path": [
+								"api",
+								"roles",
+								"E371F336-8278-4468-A6C7-373B9F02DB52",
+								"permissions"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Roles :: AddPermissionToRole",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{Authorization}}",
+								"type": "text"
+							},
+							{
+								"key": "",
+								"value": "",
+								"type": "text",
+								"disabled": true
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"id\": \"18A09A24-67F4-44FE-8993-17C9AA7BBD63\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{Host}}/api/roles/E371F336-8278-4468-A6C7-373B9F02DB52/permissions",
+							"host": [
+								"{{Host}}"
+							],
+							"path": [
+								"api",
+								"roles",
+								"E371F336-8278-4468-A6C7-373B9F02DB52",
+								"permissions"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Roles :: RemovePermissionFromRole",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{Authorization}}",
+								"type": "text"
+							},
+							{
+								"key": "",
+								"value": "",
+								"type": "text",
+								"disabled": true
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"id\": \"18A09A24-67F4-44FE-8993-17C9AA7BBD63\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{Host}}/api/roles/E371F336-8278-4468-A6C7-373B9F02DB52/permissions",
+							"host": [
+								"{{Host}}"
+							],
+							"path": [
+								"api",
+								"roles",
+								"E371F336-8278-4468-A6C7-373B9F02DB52",
+								"permissions"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "Users",
+			"item": [
+				{
+					"name": "Users :: GetUserById",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{Authorization}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{Host}}/api/users/D82D7385-C6B1-4090-8128-7695C4A83F50",
+							"host": [
+								"{{Host}}"
+							],
+							"path": [
+								"api",
+								"users",
+								"D82D7385-C6B1-4090-8128-7695C4A83F50"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Users :: GetAllUsers",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{Authorization}}",
+								"type": "text"
+							},
+							{
+								"key": "",
+								"value": "",
+								"type": "text",
+								"disabled": true
+							}
+						],
+						"url": {
+							"raw": "{{Host}}/api/users",
+							"host": [
+								"{{Host}}"
+							],
+							"path": [
+								"api",
+								"users"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Users :: AddUser",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{Authorization}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"name\": \"PostmanUser\",\r\n  \"email\": \"PostmanEmail@mail.com\",\r\n  \"password\": \"PostmanPassword\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{Host}}/api/users",
+							"host": [
+								"{{Host}}"
+							],
+							"path": [
+								"api",
+								"users"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Users :: EditUser",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Authorization",
+								"type": "text",
+								"value": "{{Authorization}}"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"name\": \"string\",\r\n  \"email\": \"string\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{Host}}/api/users/816DC3EF-FA81-47F4-82F5-A99B60F5EA8E",
+							"host": [
+								"{{Host}}"
+							],
+							"path": [
+								"api",
+								"users",
+								"816DC3EF-FA81-47F4-82F5-A99B60F5EA8E"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Users :: DeleteUser",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{Authorization}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{Host}}/api/users/816DC3EF-FA81-47F4-82F5-A99B60F5EA8E",
+							"host": [
+								"{{Host}}"
+							],
+							"path": [
+								"api",
+								"users",
+								"816DC3EF-FA81-47F4-82F5-A99B60F5EA8E"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Users :: GetUsersRoles",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{Authorization}}",
+								"type": "text"
+							},
+							{
+								"key": "",
+								"value": "",
+								"type": "text",
+								"disabled": true
+							}
+						],
+						"url": {
+							"raw": "{{Host}}/api/users/D82D7385-C6B1-4090-8128-7695C4A83F50/roles",
+							"host": [
+								"{{Host}}"
+							],
+							"path": [
+								"api",
+								"users",
+								"D82D7385-C6B1-4090-8128-7695C4A83F50",
+								"roles"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Users :: AddUserToRole",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{Authorization}}",
+								"type": "text"
+							},
+							{
+								"key": "",
+								"value": "",
+								"type": "text",
+								"disabled": true
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"id\": \"E371F336-8278-4468-A6C7-373B9F02DB52\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{Host}}/api/users/D82D7385-C6B1-4090-8128-7695C4A83F50/roles",
+							"host": [
+								"{{Host}}"
+							],
+							"path": [
+								"api",
+								"users",
+								"D82D7385-C6B1-4090-8128-7695C4A83F50",
+								"roles"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Users :: RemoveUserFromRole",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{Authorization}}",
+								"type": "text"
+							},
+							{
+								"key": "",
+								"value": "",
+								"type": "text",
+								"disabled": true
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"id\": \"E371F336-8278-4468-A6C7-373B9F02DB52\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{Host}}/api/users/D82D7385-C6B1-4090-8128-7695C4A83F50/roles",
+							"host": [
+								"{{Host}}"
+							],
+							"path": [
+								"api",
+								"users",
+								"D82D7385-C6B1-4090-8128-7695C4A83F50",
+								"roles"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		},
+		{
+			"name": "Account",
+			"item": [
+				{
+					"name": "Account :: Login",
+					"protocolProfileBehavior": {
+						"disabledSystemHeaders": {}
+					},
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "",
+								"value": "",
+								"type": "text",
+								"disabled": true
+							},
+							{
+								"key": "",
+								"value": "",
+								"type": "text",
+								"disabled": true
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"email\": \"admin@test.com\",\r\n  \"password\": \"bibili00\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{Host}}/api/account/login",
+							"host": [
+								"{{Host}}"
+							],
+							"path": [
+								"api",
+								"account",
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Account :: Register",
+					"protocolProfileBehavior": {
+						"disabledSystemHeaders": {}
+					},
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "",
+								"value": "",
+								"type": "text",
+								"disabled": true
+							},
+							{
+								"key": "",
+								"value": "",
+								"type": "text",
+								"disabled": true
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"name\": \"edb\",\r\n  \"email\": \"edb@test.com\",\r\n  \"password\": \"bibili00\",\r\n  \"confirmPassword\": \"bibili00\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{Host}}/api/account/register",
+							"host": [
+								"{{Host}}"
+							],
+							"path": [
+								"api",
+								"account",
+								"register"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Account :: PasswordRequest",
+					"protocolProfileBehavior": {
+						"disabledSystemHeaders": {}
+					},
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "",
+								"value": "",
+								"type": "text",
+								"disabled": true
+							},
+							{
+								"key": "",
+								"value": "",
+								"type": "text",
+								"disabled": true
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"email\": \"pepper@test.com\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{Host}}/api/account/password-request",
+							"host": [
+								"{{Host}}"
+							],
+							"path": [
+								"api",
+								"account",
+								"password-request"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Account :: PasswordChange",
+					"protocolProfileBehavior": {
+						"disabledSystemHeaders": {}
+					},
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "",
+								"value": "",
+								"type": "text",
+								"disabled": true
+							},
+							{
+								"key": "",
+								"value": "",
+								"type": "text",
+								"disabled": true
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"userId\": \"F3E8124A-E6EB-40DD-ADFD-976DF7F6B447\",\r\n  \"newPassword\": \"bibili\",\r\n  \"confirmPassword\": \"bibili\",\r\n  \"token\": \"CfDJ8FBf3yHyb6dNsyS6nuCnJWQNsRQ5nY1IRXmb7KRvvL%2BdOXYWiN0WY2%2BqO5t4kCE%2BtdkjhJCZke693rbt3V47N%2B9ft2pDb9NY8jL%2B2EFQ3QUKocYDmyF8XC%2FpnW9ROXoH80KLSr0hRFscJRNT5WD3O3T2DJd%2BCNFFOLDhFVaiaERhV8%2BICKqXK%2Fi4aodiU3JKkBbC5dcIOFXGOkJU7SzIa%2FBqjhPrJNfpmKPWGLizN%2Bl7UnLnigdNiwxFC8%2BaZesf5w%3D%3D\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{Host}}/api/account/password-change",
+							"host": [
+								"{{Host}}"
+							],
+							"path": [
+								"api",
+								"account",
+								"password-change"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"protocolProfileBehavior": {}
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"id": "92f1f086-409e-4e9c-b8b9-7e908310bb2a",
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"id": "fd2f9e0f-4d05-4f57-8d9c-ead1552ff7eb",
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"id": "f317a37d-3f57-4f59-90fa-f62d112ca1f5",
+			"key": "Authorization",
+			"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJwcm0iOiJVc2Vycy5BZGQsQXV0aG9ycy5FZGl0LFVzZXJzLlNlYXJjaCxCb29rcy5BZGQsVXNlcnMuRGVsZXRlLFJvbGVzLkFkZCxCb29rcy5TZWFyY2gsQm9va3MuRWRpdCxCb29rcy5EZWxldGUsQXV0aG9ycy5BZGQsUm9sZXMuRWRpdCxVc2Vycy5FZGl0LFJvbGVzLlNlYXJjaCxBdXRob3JzLkRlbGV0ZSxSb2xlcy5EZWxldGUsQXV0aG9ycy5TZWFyY2giLCJuYmYiOjE1OTc4Mzg1MTQsImV4cCI6MTYwMDQzMDUxNCwiaWF0IjoxNTk3ODM4NTE0LCJpc3MiOiJodHRwczovL2xvY2FsaG9zdDo0NDMxNi8iLCJhdWQiOiJodHRwczovL2xvY2FsaG9zdDo0NDMxNi8ifQ.dA7QdEsWmNPpk6F7V2D6OYUrE3Avm4LkGB5WEOVY8wo"
+		},
+		{
+			"id": "4563fa70-e59a-4710-9a58-e340a37ef836",
+			"key": "Host",
+			"value": "https://localhost:44316"
+		}
+	],
+	"protocolProfileBehavior": {}
+}
